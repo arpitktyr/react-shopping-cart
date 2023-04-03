@@ -5,9 +5,9 @@ import App from "./App";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import { getCategories,getProducts } from "./redux/reducer/productSlice";
-store.dispatch(getCategories())
-store.dispatch(getProducts())
+import { getCategories, getProducts } from "./redux/reducer/productSlice";
+store.dispatch(getCategories());
+store.dispatch(getProducts());
 
 const root = ReactDOMClient.createRoot(document.getElementById("root"));
 root.render(

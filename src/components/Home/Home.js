@@ -1,5 +1,4 @@
 import React from "react";
-
 import "./Home.css";
 import Categorieslist from "../Categories/Categorieslist";
 import Carousel from "../Carousel/Carousel";
@@ -9,7 +8,7 @@ const Home = () => {
     <div className="home-container">
       <div className="card bg-dark text-white border-0">
         <img
-          src={process.env.PUBLIC_URL + "/images/home5.webp"}
+          src={"images/home5.webp"}
           className="img-fluid"
           alt="grocery bag "
         />

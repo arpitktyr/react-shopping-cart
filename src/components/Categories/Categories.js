@@ -2,9 +2,7 @@ import React from "react";
 import "./category.css";
 import { Link } from "react-router-dom";
 
-
 const Categories = ({ catName }) => {
-  
   return (
     <div className="col-sm-6 row-padding">
       <div className="card">
@@ -16,7 +14,6 @@ const Categories = ({ catName }) => {
         </div>
       </div>
     </div>
-    
   );
 };
 export default Categories;

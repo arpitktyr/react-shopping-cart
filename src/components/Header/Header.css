@@ -6,7 +6,15 @@
 .fa-shopping-basket {
   color: rgb(11, 11, 11);
 }
-.nav-link:hover {
+
+.navbar .navbar-nav .nav-link {
+  margin: 0 2px;
+}
+.navbar .navbar-nav .dropdown-toggle.show,
+.dropdown .dropdown-item:hover,
+.dropdown .dropdown-item.active,
+.navbar .navbar-nav .nav-link:hover,
+.navbar .navbar-nav .nav-link.active {
   background-color: #e9ecef;
-  border-radius: 7px;
+  border-radius: 4px;
 }

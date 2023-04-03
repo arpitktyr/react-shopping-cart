@@ -7,11 +7,10 @@ import { useSelector } from "react-redux";
 import { Link, useRouteLoaderData } from "react-router-dom";
 
 const Cart = () => {
-
-  const token = useRouteLoaderData('root');
+  const token = useRouteLoaderData("root");
   console.log(token);
-  const [checkoutError,setCheckoutError] = useState("");
-  const [checkoutMsg,setCheckoutMsg] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
+  const [checkoutMsg, setCheckoutMsg] = useState("");
 
   let totalAmount = 0;
   const dispatch = useDispatch();
@@ -20,21 +19,21 @@ const Cart = () => {
   };
   const state = useSelector((state) => state.handleCart);
 
-  const onIncreaseItem = (props)=>{
-    dispatch(increaseQty(props))
-
-  }
-  const onDecreaseItem = (props)=>{
-    dispatch(decreaseQty(props))
-    
-  }
-   const checkoutHandler=()=>{
-    if(token){
-      setCheckoutMsg("This functionality is under development, Hope will implement it.");
-    }else{
+  const onIncreaseItem = (props) => {
+    dispatch(increaseQty(props));
+  };
+  const onDecreaseItem = (props) => {
+    dispatch(decreaseQty(props));
+  };
+  const checkoutHandler = () => {
+    if (token) {
+      setCheckoutMsg(
+        "This functionality is under development, Hope will implement it."
+      );
+    } else {
       setCheckoutError("Please first login to proceed with order.");
     }
-   }
+  };
 
   return (
     <main className="page">
@@ -44,10 +43,30 @@ const Cart = () => {
             <h2>Cart</h2>
           </div>
           {checkoutError && (
-            <div className="row"><span className=" alert alert-danger col-sm-12">{checkoutError}  <strong> <Link to="/Login" className="text-dark"> Login </Link> </strong></span> <br /><br /></div>
+            <div className="row">
+              <span className=" alert alert-danger col-sm-12">
+                {checkoutError}{" "}
+                <strong>
+                  {" "}
+                  <Link to="/Login" className="text-dark">
+                    {" "}
+                    Login{" "}
+                  </Link>{" "}
+                </strong>
+              </span>{" "}
+              <br />
+              <br />
+            </div>
           )}
           {checkoutMsg && (
-           <div className="row"> <span className=" alert alert-success col-sm-12">{checkoutMsg}</span><br /><br /></div>
+            <div className="row">
+              {" "}
+              <span className=" alert alert-success col-sm-12">
+                {checkoutMsg}
+              </span>
+              <br />
+              <br />
+            </div>
           )}
           {state.length > 0 ? (
             <div className="">
@@ -55,7 +74,10 @@ const Cart = () => {
                 <div className="col-md-12 col-lg-8">
                   <div className="items">
                     {state.map((cart) => {
-                      totalAmount+= (cart.qty!=='undefined' && cart.qty>0)?parseInt(cart.price*cart.qty):parseInt(cart.price);
+                      totalAmount +=
+                        cart.qty !== "undefined" && cart.qty > 0
+                          ? parseInt(cart.price * cart.qty)
+                          : parseInt(cart.price);
                       return (
                         <div key={cart.id} className="product">
                           <div className="row">
@@ -76,26 +98,29 @@ const Cart = () => {
                                   </div>
 
                                   <div className="row price">
-                                    <span>₹{cart.price} 
-                                    </span>
-                                   <div>
-                                  
-                                    <button onClick={() => onDecreaseItem(cart)} className="btn btn-outline-dark bt">
-                                       -
+                                    <span>₹{cart.price}</span>
+                                    <div>
+                                      <button
+                                        onClick={() => onDecreaseItem(cart)}
+                                        className="btn btn-outline-dark bt"
+                                      >
+                                        -
                                       </button>
                                       <span className="ml-3">{cart.qty}</span>
-                                      
-                                      <button onClick={() => onIncreaseItem(cart)} className="btn btn-outline-dark bt">
-                                       +
+
+                                      <button
+                                        onClick={() => onIncreaseItem(cart)}
+                                        className="btn btn-outline-dark bt"
+                                      >
+                                        +
                                       </button>
-                                   </div>
+                                    </div>
                                     <span>
-                                     
                                       <button
                                         className="btn btn-danger ml-3"
                                         onClick={() => removeProduct(cart)}
                                       >
-                                       <i className="fas fa-trash "></i>
+                                        <i className="fas fa-trash "></i>
                                       </button>
                                     </span>
                                   </div>
@@ -126,7 +151,8 @@ const Cart = () => {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-dark btn-lg btn-block" onClick={checkoutHandler}
+                      className="btn btn-outline-dark btn-lg btn-block"
+                      onClick={checkoutHandler}
                     >
                       Checkout
                     </button>

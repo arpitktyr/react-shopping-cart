@@ -1,47 +1,45 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
+import { useParams, Link } from "react-router-dom";
 import ProductDetailCard from "./ProductDetailCard";
-import { getWrapper } from "../../Utils/index";
-import { Constants } from "../../Constants/Index";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { useSelector } from "react-redux";
 
 const ProductDetail = () => {
-  const [error, SetError] = useState({});
-  const [product, setProduct] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
   const { pid } = useParams();
-  useEffect(() => {
-    fetchProductById();
-  }, []);
-
-  const fetchProductById = async () => {
-    setIsLoading(true);
-    try {
-      SetError("");
-      let apiRes = await getWrapper(
-        Constants.apiUrl + Constants.SINGLE_PRODUCT + pid
-      );
-      setIsLoading(false);
-     
-      setProduct(apiRes.data);
-    } catch (err) {
-      SetError(err.message);
-      setIsLoading(false);
-    }
-  };
+  const { product, loading, error } = useSelector(
+    (state) => state.productSlice
+  );
+  const products = product.find((item) => item.id == pid);
   const productRender = (
-    <div>
-      {error.length > 0 && (
-        <div className="alert alert-danger">
-          <b>Error: </b> {error}
-        </div>
-      )}
-      <h3 style={{ textAlign: "center", padding: "10px", marginTop: "25px" }}>
-        {product.productName}
-      </h3>
-      <ProductDetailCard data={product} />
+    <div className="container">
+      <div>
+        {error.length > 0 && (
+          <div className="alert alert-danger">
+            <b>Error: </b> {error}
+          </div>
+        )}
+        <br />
+        {products && (
+          <>
+            <nav aria-label="breadcrumb">
+              <ul className="breadcrumb">
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to={`/products/${products.category}`}>
+                    {products.category}
+                  </Link>
+                </li>
+                <li>Italy</li>
+              </ul>
+            </nav>
+            <ProductDetailCard data={products} />
+          </>
+        )}
+      </div>
     </div>
   );
-  return <>{isLoading ? <LoadingSpinner /> : productRender}</>;
+  return <>{loading ? <LoadingSpinner /> : productRender}</>;
 };
 export default ProductDetail;

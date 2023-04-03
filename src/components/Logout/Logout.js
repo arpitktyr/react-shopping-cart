@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 
-import Login from '../Login/Login';
+import Login from "../Login/Login";
 
-const Logout = (props) => {
-    return (
-        <div>
-            <Login />
-        </div>
-    )
-}
+const Logout = () => {
+  return (
+    <div>
+      <Login />
+    </div>
+  );
+};
 
-export default Logout
+export default Logout;

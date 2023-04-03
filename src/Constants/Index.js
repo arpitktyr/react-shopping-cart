@@ -1,6 +1,5 @@
 export const Constants = {
-  imageUrl: "https://fakestoreapi.com/",
-  apiUrl: "https://fakestoreapi.com/",
+  apiUrl: "https://node-cart-backend.onrender.com/",
   ALL_PRODUCTS: "product/",
   SINGLE_PRODUCT: "products/",
 };

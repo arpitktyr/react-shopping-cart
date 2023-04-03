@@ -7,9 +7,7 @@ export default function LoadingSpinner() {
       <div className="spinner-container">
         <div className="loading-spinner"></div>
       </div>
-      <div className="spinner-container2">
-     
-      </div>
+      <div className="spinner-container2"></div>
     </>
   );
 }

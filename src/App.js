@@ -1,83 +1,83 @@
 import "./App.css";
 import About from "./components/About/About";
-
 import Home from "./components/Home/Home";
 import Contact from "./components/Contact/Contact";
 import ProductList from "./components/Products/ProductList";
-import Login, { action as authAction, logoutAction} from "./components/Login/Login";
+import Login, { logoutAction } from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import { BrowserRouter, Routes, Route, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import ProductDetail from "./components/Products/ProductDetail";
-import Logout from "./components/Logout/Logout";
 import Errorpage from "./components/Errorpage/Errorpage";
-import ContextAPIExample from "./components/CreateContext/Context";
-import Color from "./components/CreateContext/Color";
-import { checkAuthLoader, tokenLoader } from './Utils/auth';
+import { checkAuthLoader, tokenLoader } from "./Utils/auth";
 import Orders from "./components/Orders/Orders";
-
 import Cart from "./components/Cart/Cart";
 import RootLayout from "./components/Root/Root";
 import Profile from "./components/Profile/Profile";
 
-const router = createBrowserRouter([{
-  path:'/',
-  element:<RootLayout />,
-  errorElement:<Errorpage />,
-  id:"root",
-  loader:tokenLoader,
-  children:[
-    { index: true, element: <Home /> },
-    {
-      path:'About',
-      element:<About />
-    },
-    {
-      path:'Contact',
-      element:<Contact />
-    },
-    {
-      path:'Cart',
-      element:<Cart />
-    },
-    {
-      path:'Login',
-      element:<Login />,
-      action:authAction,
-    },
-    {
-      path:'Register',
-      element:<Register />
-    },
-    {
-      path:'products/:catId',
-      element:<ProductList /> 
-    },
-    {
-      path:'product/:pid',
-      element:<ProductDetail /> 
-    },
-    {
-      path:'/products/:catId',
-      element:<ProductList /> 
-    },
-    {
-      path:'/orders',
-      element:<Orders />,
-      loader: checkAuthLoader, 
-    },
-    {
-      path:'/profile',
-      element:<Profile />,
-      loader: checkAuthLoader, 
-    },
-    {
-      path: 'logout',
-      action: logoutAction,
-    },
-  ]
-
-
-}])
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    errorElement: <Errorpage />,
+    id: "root",
+    loader: tokenLoader,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: "About",
+        element: <About />,
+      },
+      {
+        path: "Contact",
+        element: <Contact />,
+      },
+      {
+        path: "Cart",
+        element: <Cart />,
+      },
+      {
+        path: "Login",
+        element: <Login />,
+      },
+      {
+        path: "Register",
+        element: <Register />,
+      },
+      {
+        path: "products/:catId",
+        element: <ProductList />,
+      },
+      {
+        path: "product/:pid",
+        element: <ProductDetail />,
+      },
+      {
+        path: "/products/:catId",
+        element: <ProductList />,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
+        loader: checkAuthLoader,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+        loader: checkAuthLoader,
+      },
+      {
+        path: "logout",
+        action: logoutAction,
+      },
+    ],
+  },
+]);
 
 function App() {
   // return (
@@ -103,8 +103,7 @@ function App() {
   //     </BrowserRouter>
   //   </div>
   // );
-return ( 
-<RouterProvider router={router} ></RouterProvider>)
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;
