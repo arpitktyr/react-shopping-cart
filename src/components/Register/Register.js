@@ -6,10 +6,17 @@ function Register() {
   const navigate = useNavigate();
   const [data, setData] = useState({});
 
-  const [userData, setUserData] = useState({ email: "", password: "" });
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [inputError, setInputError] = useState({
     emailError: "",
     passwordError: "",
+    nameError: "",
+    confirmPasswordError: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,10 +26,21 @@ function Register() {
       return { ...prevData, email: e.target.value };
     });
   };
+  const nameHandler = (e) => {
+    setUserData((prevData) => {
+      return { ...prevData, name: e.target.value };
+    });
+  };
 
   const passwordHandler = (e) => {
     setUserData((prevData) => {
       return { ...prevData, password: e.target.value };
+    });
+  };
+
+  const confirmPasswordHandler = (e) => {
+    setUserData((prevData) => {
+      return { ...prevData, confirmPassword: e.target.value };
     });
   };
 
@@ -31,8 +49,40 @@ function Register() {
     setInputError({ email: "", password: "" });
     setData({ message: "", errors: {} });
     // console.log(userData);
-    const { email, password } = userData;
+    const { email, password, name, confirmPassword } = userData;
+    const nameRegex = /^[a-zA-Z ]+$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name) {
+      setInputError((prevData) => {
+        return { ...prevData, nameError: "Please enter a Name." };
+      });
+      return;
+    } else if (!nameRegex.test(name)) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          nameError: "Only aphabet letters are allowed.",
+        };
+      });
+      return;
+    }
+    if (name.length > 20 || name.length < 4) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          nameError:
+            "Name length should be greater then 4 character and not more than 20 character.",
+        };
+      });
+      return;
+    } else {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          nameError: "",
+        };
+      });
+    }
 
     if (!email) {
       setInputError((prevData) => {
@@ -79,6 +129,15 @@ function Register() {
           passwordError: "",
         };
       });
+    }
+    if (password !== confirmPassword) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          confirmPasswordError: "Please does not match.",
+        };
+      });
+      return;
     }
 
     setIsSubmitting(true);
@@ -139,11 +198,24 @@ function Register() {
             {data && data.message && (
               <p className="text-danger"> {data.message}</p>
             )}
-
+            <div className="form-group">
+              <label htmlFor="name"> Name </label>
+              <input
+                type="name"
+                name="name"
+                id="name"
+                className="form-control"
+                placeholder="Enter Name"
+                onChange={nameHandler}
+                value={userData.name}
+              />
+              {inputError.nameError && (
+                <span className="text-danger">{inputError.nameError}</span>
+              )}
+            </div>
             <div className="form-group">
               <label htmlFor="email"> Email </label>
               <input
-                aria-label="Email"
                 type="email"
                 name="email"
                 id="email"
@@ -159,7 +231,6 @@ function Register() {
             <div className="form-group">
               <label htmlFor="password"> Password </label>
               <input
-                aria-label="Password"
                 type="password"
                 className="form-control"
                 name="password"
@@ -170,6 +241,23 @@ function Register() {
               />
               {inputError.passwordError && (
                 <span className="text-danger">{inputError.passwordError}</span>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="confirmPassword"> Confirm Password </label>
+              <input
+                type="password"
+                className="form-control"
+                name="confirmPassword"
+                placeholder="Enter password"
+                id="confirmPassword"
+                onChange={confirmPasswordHandler}
+                value={userData.confirmPassword}
+              />
+              {inputError.confirmPasswordError && (
+                <span className="text-danger">
+                  {inputError.confirmPasswordError}
+                </span>
               )}
             </div>
 

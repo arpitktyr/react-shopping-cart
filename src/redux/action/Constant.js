@@ -1,0 +1,6 @@
+export const ActionType = {
+  ADD_ITEM: "ADDITEM",
+  DELETE_ITEM: "DELITEM",
+  INCREASE_QTY: "INCREASE_QTY",
+  DECREASE_QTY: "DECREASE_QTY",
+};

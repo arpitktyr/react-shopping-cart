@@ -1,6 +1,5 @@
 import "./About.css";
-import { aboutMission, aboutPara, aboutVision } from "../../Constants/Index";
-import { aboutHeading } from "../../Constants/Index";
+import { aboutMission, aboutPara, aboutVision, aboutHeading } from "./Constant";
 
 import { Link } from "react-router-dom";
 const About = () => {

@@ -1,4 +1,4 @@
-import { ActionType } from "../../Constants/Index";
+import { ActionType } from "./Constant";
 
 // To add item
 export const addCart = (product) => {
@@ -29,4 +29,3 @@ export const decreaseQty = (product) => {
     payload: product,
   };
 };
-

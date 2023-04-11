@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { filterSide } from "../../Constants/Index";
+
 import "./Product.css";
 import ProductCard from "./ProductCard";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 const ProductList = () => {
   const dispatch = useDispatch();
   const [sortOption, setSortOption] = useState("price_low_to_high");
-  const { product, loading, error } = useSelector(
+  const { category, product, loading, error } = useSelector(
     (state) => state.productSlice
   );
 
@@ -19,6 +19,12 @@ const ProductList = () => {
   }
 
   const { catId } = useParams();
+
+  const extractNamesByCatId = (arr, catId) => {
+    const item = arr.find((item) => item.catId === catId);
+    return item ? item.name : "";
+  };
+  const categoryName = extractNamesByCatId(category, catId);
 
   const [products, setproducts] = useState([]);
 
@@ -30,7 +36,7 @@ const ProductList = () => {
 
   const filterCategory = (name, product) => {
     let res = product.filter((product) => {
-      return name === product.category;
+      return name === product.catId;
     });
     const sortedProducts = sort(res);
     setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
@@ -74,7 +80,7 @@ const ProductList = () => {
       {error.length > 0 && <div className="alert alert-danger"> {error}</div>}
       <div className="row">
         <div className="col-lg-3">
-          <h2 className="subcategory-heading text-center">{filterSide}</h2>
+          <h2 className="subcategory-heading text-center">Filter</h2>
           <ul className="list-group subcategory">
             <li className="list-group-item">
               <span className="sort-by-heading">Sort by</span>
@@ -127,7 +133,7 @@ const ProductList = () => {
           </ul>
         </div>
         <div className="col-lg-9">
-          <h1 className="text-center all-product-heading">{catId}</h1>
+          <h1 className="text-center all-product-heading">{categoryName}</h1>
           <div className="row">
             {products.length ? (
               products.map((product) => (

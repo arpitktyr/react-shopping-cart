@@ -8,6 +8,8 @@ const product = {
   product: [],
   loading: false,
   error: "",
+  categoryLoading: false,
+  categoryError: "",
 };
 export const getCategories = createAsyncThunk(
   "getCategory",
@@ -27,17 +29,17 @@ const productSlice = createSlice({
   initialState: product,
   extraReducers: (builder) => {
     builder.addCase(getCategories.pending, (state, action) => {
-      state.loading = true;
+      state.categoryLoading = true;
     });
 
     builder.addCase(getCategories.fulfilled, (state, action) => {
-      state.loading = false;
+      state.categoryLoading = false;
       state.category = action.payload;
     });
 
     builder.addCase(getCategories.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
+      state.categoryLoading = false;
+      state.categoryError = action.error.message;
     });
 
     builder.addCase(getProducts.pending, (state, action) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Header.css";
 import { NavLink, Link, Form } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -10,9 +10,11 @@ import { getCategories } from "./../../redux/reducer/productSlice";
 const Header = () => {
   const dispatch = useDispatch();
   const token = useRouteLoaderData("root");
-  const { category, loading } = useSelector((state) => state.productSlice);
+  const { category, categoryLoading } = useSelector(
+    (state) => state.productSlice
+  );
 
-  if (category.length === 0 && loading != true) {
+  if (category.length === 0 && categoryLoading !== true) {
     dispatch(getCategories());
   }
 
@@ -20,7 +22,7 @@ const Header = () => {
 
   return (
     <div>
-      {loading ? (
+      {categoryLoading ? (
         <LoadingSpinner />
       ) : (
         <nav className="navbar navbar-expand-lg navbar-light  py-3 ">
@@ -59,16 +61,16 @@ const Header = () => {
                 </li>
 
                 {category.map((item) => (
-                  <li key={item} className="nav-item">
+                  <li key={item.catId} className="nav-item">
                     <NavLink
                       className={({ isActive }) =>
                         isActive
                           ? "nav-link text-dark active"
                           : "nav-link text-dark"
                       }
-                      to={`products/${item}`}
+                      to={`products/${item.catId}`}
                     >
-                      {item}
+                      {item.name}
                     </NavLink>
                   </li>
                 ))}

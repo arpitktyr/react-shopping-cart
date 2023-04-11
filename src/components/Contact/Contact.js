@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { contactHeading } from "../../Constants/Index";
+
 const Contact = () => {
   let mapStyle = {
     width: "100%",
@@ -21,7 +21,7 @@ const Contact = () => {
           ></iframe>
         </div>
         <div className="col-sm-6">
-          <h1>{contactHeading}</h1>
+          <h1>Get In Touch</h1>
           <form>
             <div className="form-group">
               <label for="exampleFormControlInput1">Name</label>

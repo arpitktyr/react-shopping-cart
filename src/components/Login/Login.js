@@ -203,5 +203,5 @@ export default Login;
 export function logoutAction() {
   localStorage.removeItem("token");
   localStorage.removeItem("expiration");
-  return redirect("/Login?mode=login");
+  return redirect("/Login");
 }

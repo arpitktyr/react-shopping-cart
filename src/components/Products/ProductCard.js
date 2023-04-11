@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { productButton } from "../../Constants/Index";
 
 const ProductCard = (prop) => {
   const product = prop.data;
@@ -49,7 +48,7 @@ const ProductCard = (prop) => {
             <span className="discount">10% off</span>
           </div>
           <Link className="btn btn-outline-dark" to={`/product/${product.id}`}>
-            {productButton}
+            View
           </Link>
         </div>
       </div>

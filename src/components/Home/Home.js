@@ -11,7 +11,7 @@ const Home = () => {
     (state) => state.productSlice
   );
 
-  if (product.length === 0 && loading != true) {
+  if (product.length === 0 && loading !== true) {
     dispatch(getProducts());
   }
 

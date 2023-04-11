@@ -1,4 +1,4 @@
-import { ActionType } from "../../Constants/Index";
+import { ActionType } from "../action/Constant";
 
 const cart = [];
 
