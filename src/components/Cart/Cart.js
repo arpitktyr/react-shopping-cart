@@ -8,7 +8,7 @@ import { Link, useRouteLoaderData } from "react-router-dom";
 
 const Cart = () => {
   const token = useRouteLoaderData("root");
-  console.log(token);
+  // console.log(token);
   const [checkoutError, setCheckoutError] = useState("");
   const [checkoutMsg, setCheckoutMsg] = useState("");
 

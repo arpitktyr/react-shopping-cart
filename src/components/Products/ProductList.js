@@ -4,31 +4,56 @@ import { filterSide } from "../../Constants/Index";
 import "./Product.css";
 import ProductCard from "./ProductCard";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { getProducts } from "./../../redux/reducer/productSlice";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const ProductList = () => {
+  const dispatch = useDispatch();
   const [sortOption, setSortOption] = useState("price_low_to_high");
   const { product, loading, error } = useSelector(
     (state) => state.productSlice
   );
+
+  if (product.length === 0 && loading != true) {
+    dispatch(getProducts());
+  }
+
   const { catId } = useParams();
 
   const [products, setproducts] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const lastIndex = currentPage * itemsPerPage;
+  const firstIndex = lastIndex - itemsPerPage;
+  const [totalPages, setTotalPages] = useState(1);
 
   const filterCategory = (name, product) => {
     let res = product.filter((product) => {
       return name === product.category;
     });
-    setproducts(sort(res));
+    const sortedProducts = sort(res);
+    setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
+    setproducts(sortedProducts.slice(firstIndex, lastIndex));
   };
 
   useEffect(() => {
     filterCategory(catId, product);
-  }, [catId, product, sortOption]);
+  }, [catId, product, sortOption, currentPage, itemsPerPage]);
 
-  // useEffect(() => {
-  //   filterCategory(catId, product);
-  // }, [catId, sortOption, loading, product]);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+  // Handle page click event
+  function handlePageClick(page) {
+    if (page != currentPage) setCurrentPage(page);
+  }
+
+  function handleItemsPerPageChange(event) {
+    setItemsPerPage(parseInt(event.target.value));
+    setCurrentPage(1);
+  }
 
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
@@ -79,6 +104,27 @@ const ProductList = () => {
               </span>
             </li>
           </ul>
+          <ul className="list-group subcategory mt-4">
+            <li className="list-group-item">
+              <div className="mb-2" id="itemPerPage">
+                Items Per Page
+              </div>
+              <select
+                aria-labelledby="itemPerPage"
+                id="pagecount"
+                className="form-control"
+                onChange={handleItemsPerPageChange}
+              >
+                {" "}
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="30">40</option>
+                <option value="30">50</option>
+              </select>
+            </li>
+          </ul>
         </div>
         <div className="col-lg-9">
           <h1 className="text-center all-product-heading">{catId}</h1>
@@ -94,6 +140,29 @@ const ProductList = () => {
                 </div>
               </div>
             )}
+          </div>
+          <div className="row mt-1">
+            <div className="col-sm-12">
+              <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center flex-wrap">
+                  {pageNumbers.map((number) => (
+                    <li
+                      className={
+                        currentPage == number ? "page-item active" : "page-item"
+                      }
+                      key={number}
+                    >
+                      <a
+                        className="page-link"
+                        onClick={() => handlePageClick(number)}
+                      >
+                        {number}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
           </div>
         </div>
       </div>

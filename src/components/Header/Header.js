@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Header.css";
 import { NavLink, Link, Form } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 import { useRouteLoaderData } from "react-router-dom";
+import { getCategories } from "./../../redux/reducer/productSlice";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const token = useRouteLoaderData("root");
   const { category, loading } = useSelector((state) => state.productSlice);
+
+  if (category.length === 0 && loading != true) {
+    dispatch(getCategories());
+  }
 
   const cartItemCount = useSelector((state) => state.handleCart.length);
 
@@ -74,7 +80,7 @@ const Header = () => {
                           ? "nav-link text-dark active"
                           : "nav-link text-dark"
                       }
-                      to="/Login?mode=login"
+                      to="/Login"
                     >
                       Login
                     </NavLink>

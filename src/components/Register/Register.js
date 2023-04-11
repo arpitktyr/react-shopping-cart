@@ -1,180 +1,197 @@
-import { useState, useEffect } from "react";
-import "./Register.css";
-import { useNavigate, Link } from "react-router-dom";
-import { registerHeading } from "../../Constants/Index";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function Register() {
   const navigate = useNavigate();
-  const initialValues = {
-    username: "",
-    email: "",
-    password: "",
-    mobile: "",
-    confirmpassword: "",
-  };
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState({});
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormValues({ ...formValues, [name]: value });
-  };
-  const registerUser = async (data) => {
-    // return fetch("https://reqres.in/api/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(data),
-    // }).then((data) => data.json());
-    //Register the user
+  const [data, setData] = useState({});
+
+  const [userData, setUserData] = useState({ email: "", password: "" });
+  const [inputError, setInputError] = useState({
+    emailError: "",
+    passwordError: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const emailHandler = (e) => {
+    setUserData((prevData) => {
+      return { ...prevData, email: e.target.value };
+    });
   };
 
-  const handleSubmit = async (e) => {
+  const passwordHandler = (e) => {
+    setUserData((prevData) => {
+      return { ...prevData, password: e.target.value };
+    });
+  };
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setFormErrors(validate(formValues));
-    if (Object.keys(formErrors).length === 0) {
-      let res = await registerUser({
-        email: formValues.email,
-        password: formValues.password,
+    setInputError({ email: "", password: "" });
+    setData({ message: "", errors: {} });
+    // console.log(userData);
+    const { email, password } = userData;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      setInputError((prevData) => {
+        return { ...prevData, emailError: "Please enter a email address." };
+      });
+      return;
+    } else if (!emailRegex.test(email)) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          emailError: "That doesn't look like an email address",
+        };
+      });
+      return;
+    } else {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          emailError: "",
+        };
       });
     }
-  };
 
-  const validate = (values) => {
-    const errors = {};
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
-    const phnregex =
-      /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-    if (!values.username) {
-      errors.username = "Username is required!";
-    }
-    if (!values.email) {
-      errors.email = "Email is required!";
-    } else if (!regex.test(values.email)) {
-      errors.email = "You have entered an invalid email format";
-    }
-    if (!values.mobile) {
-      errors.mobile = "Mobile is required";
-    } else if (!phnregex.test(values.mobile)) {
-      errors.mobile = "Enter a valid mobile number";
-    }
-    if (!values.password) {
-      errors.password = "Password is required";
-    } else if (values.password.length < 4) {
-      errors.password = "Password must be more than 4 characters";
-    } else if (values.password.length > 10) {
-      errors.password = "Password cannot exceed more than 10 characters";
-    }
-    if (!values.confirmpassword) {
-      errors.confirmpassword = "Confirm password is required";
-    } else if (values.password !== values.confirmpassword) {
-      errors.confirmpassword = "password not matched";
+    if (!password) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          passwordError: "Please enter a password.",
+        };
+      });
+      return;
+    } else if (password.length < 6) {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          passwordError: "Password must be at least 8 characters long",
+        };
+      });
+      return;
+    } else {
+      setInputError((prevData) => {
+        return {
+          ...prevData,
+          passwordError: "",
+        };
+      });
     }
 
-    return errors;
+    setIsSubmitting(true);
+    const response = await fetch(
+      "https://node-cart-backend.onrender.com/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      }
+    );
+    setIsSubmitting(false);
+    const resData = await response.json();
+
+    if (!response.ok) {
+      if (resData.message) {
+        setData((prevData) => {
+          return { ...prevData, message: resData.message };
+        });
+      }
+      if (resData.errors) {
+        setData((prevData) => {
+          return { ...prevData, errors: resData.errors };
+        });
+      }
+    } else {
+      const token = resData.token;
+      localStorage.setItem("token", token);
+      const expiration = new Date();
+      expiration.setHours(expiration.getHours() + 1);
+      localStorage.setItem("expiration", expiration.toISOString());
+      navigate("/", { replace: true });
+    }
   };
 
   return (
-    <div className="main-container">
-      <div className="register-container">
-        <form className="form-container" onSubmit={handleSubmit}>
-          <h1 className="form-title">{registerHeading}</h1>
-          <div className="ui divider"></div>
-          <div className="ui form">
-            <div className="field">
-              <input
-                className="input-field"
-                autoComplete="off"
-                aria-label="Username"
-                type="text"
-                name="username"
-                aria-relevant="true"
-                placeholder="Username"
-                value={formValues.username}
-                onChange={handleChange}
-              />
-            </div>
-            <p aria-live="assertive" className="error-div">
-              {formErrors.username}
-            </p>
-            <br />
-            <div className="field">
-              <input
-                className="input-field"
-                autoComplete="off"
-                aria-label="Email"
-                type="text"
-                name="email"
-                aria-required="true"
-                placeholder="Email"
-                value={formValues.email}
-                onChange={handleChange}
-              />
-            </div>
-            <p aria-live="assertive" className="error-div">
-              {formErrors.email}
-            </p>
-            <br />
-            <div className="field">
-              <input
-                className="input-field"
-                autoComplete="off"
-                aria-label="Mobile"
-                type="text"
-                name="mobile"
-                aria-required="true"
-                placeholder="Mobile"
-                value={formValues.mobile}
-                onChange={handleChange}
-              />
-            </div>
-            <p aria-live="assertive" className="error-div">
-              {formErrors.mobile}
-            </p>
-            <br />
+    <div className="container">
+      <div className="row">
+        <div className="login-form">
+          <form
+            className="form-container"
+            method="post"
+            onSubmit={submitHandler}
+          >
+            <h1 className="form-title">Create a new user</h1>
+            {data && data.errors && (
+              <ul>
+                {Object.values(data.errors).map((err) => (
+                  <li key={err} className="text-danger">
+                    {" "}
+                    {err}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {data && data.message && (
+              <p className="text-danger"> {data.message}</p>
+            )}
 
-            <div className="field">
+            <div className="form-group">
+              <label htmlFor="email"> Email </label>
               <input
-                className="input-field"
+                aria-label="Email"
+                type="email"
+                name="email"
+                id="email"
+                className="form-control"
+                placeholder="Enter email"
+                onChange={emailHandler}
+                value={userData.email}
+              />
+              {inputError.emailError && (
+                <span className="text-danger">{inputError.emailError}</span>
+              )}
+            </div>
+            <div className="form-group">
+              <label htmlFor="password"> Password </label>
+              <input
                 aria-label="Password"
                 type="password"
+                className="form-control"
                 name="password"
-                aria-required="true"
-                placeholder="Password"
-                value={formValues.password}
-                onChange={handleChange}
+                placeholder="Enter password"
+                id="password"
+                onChange={passwordHandler}
+                value={userData.password}
               />
+              {inputError.passwordError && (
+                <span className="text-danger">{inputError.passwordError}</span>
+              )}
             </div>
-            <p aria-live="assertive" className="error-div">
-              {formErrors.password}
-            </p>
-            <br />
-            <div className="field">
-              <input
-                className="input-field"
-                aria-label="Confirm Password"
-                type="password"
-                name="confirmpassword"
-                aria-required="true"
-                placeholder="Confirm Password"
-                value={formValues.confirmpassword}
-                onChange={handleChange}
-              />
-            </div>
-            <p aria-live="assertive" className="error-div">
-              {formErrors.confirmpassword}
-            </p>
-            <br />
-            <button className="register-btn fluid ui button blue btn-outline-dark">
-              Submit
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              style={{ margin: "20px 0" }}
+              className="btn btn-dark btn-block"
+            >
+              {isSubmitting ? "Submitting.." : "Submit"}
             </button>
             <div>
-              <Link className="login-link" to="/Login">
-                Already regestered? Login
-              </Link>
+              {isSubmitting ? (
+                <LoadingSpinner />
+              ) : (
+                <Link className="text-dark" to="/Login">
+                  Login Here
+                </Link>
+              )}
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

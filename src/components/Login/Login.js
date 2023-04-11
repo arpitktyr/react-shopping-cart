@@ -1,26 +1,16 @@
 import { useState } from "react";
-import { Link, useSearchParams, redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 function Login() {
   const navigate = useNavigate();
   const [data, setData] = useState({});
 
-  const [searchParams] = useSearchParams();
   const [userData, setUserData] = useState({ email: "", password: "" });
   const [inputError, setInputError] = useState({
     emailError: "",
     passwordError: "",
   });
-
-  let mode = searchParams.get("mode");
-  let isLogin;
-  if (mode) {
-    isLogin = mode === "login";
-  } else {
-    isLogin = true;
-    mode = "login";
-  }
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -93,7 +83,7 @@ function Login() {
 
     setIsSubmitting(true);
     const response = await fetch(
-      "https://node-cart-backend.onrender.com/" + mode,
+      "https://node-cart-backend.onrender.com/login",
       {
         method: "POST",
         headers: {
@@ -136,9 +126,7 @@ function Login() {
             method="post"
             onSubmit={submitHandler}
           >
-            <h1 className="form-title">
-              {isLogin ? "Log in" : "Create a new user"}
-            </h1>
+            <h1 className="form-title">Log in</h1>
             {data && data.errors && (
               <ul>
                 {Object.values(data.errors).map((err) => (
@@ -198,11 +186,8 @@ function Login() {
               {isSubmitting ? (
                 <LoadingSpinner />
               ) : (
-                <Link
-                  className="text-dark"
-                  to={`/login/?mode=${isLogin ? "signup" : "login"} `}
-                >
-                  {isLogin ? "Create an Account" : "Login Here"}
+                <Link className="text-dark" to="/Register">
+                  Create an Account
                 </Link>
               )}
             </div>
@@ -214,73 +199,6 @@ function Login() {
 }
 
 export default Login;
-
-// export async function action({ request }) {
-//   const searchParams = new URL(request.url).searchParams;
-//   const mode = searchParams.get("mode") || "login";
-
-//   if (mode !== "login" && mode !== "signup") {
-//     throw json({ message: "Unsupported mode." }, { status: 422 });
-//   }
-
-//   const data = await request.formData();
-//   let errors = {};
-
-//   // Email and password validation
-//   const email = data.get("email");
-//   const password = data.get("password");
-
-//   if (!email && !password) {
-//     errors.emailError = errors.passwordError =
-//       "Email and password are required";
-//   }
-//   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-//   if (!emailRegex.test(email)) {
-//     errors.emailError = "That doesn't look like an email address";
-//   }
-
-//   if (password.length < 6) {
-//     errors.passwordError = "Password must be at least 8 characters long";
-//   }
-//   // return data if we have errors
-//   if (Object.keys(errors).length) {
-//     return errors;
-//   }
-
-//   const authData = {
-//     email: data.get("email"),
-//     password: data.get("password"),
-//   };
-
-//   const response = await fetch(
-//     "https://node-cart-backend.onrender.com/" + mode,
-//     {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(authData),
-//     }
-//   );
-
-//   if (response.status === 422 || response.status === 401) {
-//     return response;
-//   }
-
-//   if (!response.ok) {
-//     throw json({ message: "Could not authenticate user." }, { status: 500 });
-//   }
-
-//   const resData = await response.json();
-//   const token = resData.token;
-
-//   localStorage.setItem("token", token);
-//   const expiration = new Date();
-//   expiration.setHours(expiration.getHours() + 1);
-//   localStorage.setItem("expiration", expiration.toISOString());
-
-//   return redirect("/");
-// }
 
 export function logoutAction() {
   localStorage.removeItem("token");
