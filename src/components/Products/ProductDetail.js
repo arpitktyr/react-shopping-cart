@@ -2,13 +2,19 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import ProductDetailCard from "./ProductDetailCard";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getProducts } from "../../redux/reducer/productSlice";
 
 const ProductDetail = () => {
+  const dispatch = useDispatch();
   const { pid } = useParams();
   const { product, loading, error } = useSelector(
     (state) => state.productSlice
   );
+
+  if (product.length === 0 && loading != true) {
+    dispatch(getProducts());
+  }
   const products = product.find((item) => item.id == pid);
   const productRender = (
     <div className="container">
@@ -27,7 +33,7 @@ const ProductDetail = () => {
                   <Link to="/">Home</Link>
                 </li>
                 <li>
-                  <Link to={`/products/${products.category}`}>
+                  <Link to={`/products/${products.catId}`}>
                     {products.category}
                   </Link>
                 </li>

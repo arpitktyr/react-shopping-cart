@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import EditProfile from "./EditProfile";
+import { UserContext } from "../../context/user-context";
 
 const Profile = () => {
+  const { userName, userEmail } = useContext(UserContext);
   const [userData, setUserData] = useState({
-    name: "Aman Katiyar",
-    email: "aman@gmail.com",
+    name: userName,
+    email: userEmail,
     pincode: "209727",
     address: "Kanpur, Uttar Pradesh",
     mobile: "9956455678",

@@ -6,6 +6,8 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 // import { getCategories, getProducts } from "./redux/reducer/productSlice";
+
+import UserContextProvider from "./context/user-context";
 // store.dispatch(getCategories());
 // store.dispatch(getProducts());
 
@@ -13,7 +15,9 @@ const root = ReactDOMClient.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <UserContextProvider>
+        <App />
+      </UserContextProvider>
     </Provider>
   </React.StrictMode>
 );

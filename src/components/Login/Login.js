@@ -1,8 +1,9 @@
-import { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
-
+import { UserContext } from "../../context/user-context";
 function Login() {
+  const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
   const [data, setData] = useState({});
 
@@ -109,6 +110,8 @@ function Login() {
       }
     } else {
       const token = resData.token;
+      setUserName(resData.name);
+      setUserEmail(resData.email);
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);

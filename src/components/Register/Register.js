@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { UserContext } from "../../context/user-context";
 
 function Register() {
+  const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
   const [data, setData] = useState({});
-
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -25,11 +26,14 @@ function Register() {
     setUserData((prevData) => {
       return { ...prevData, email: e.target.value };
     });
+    setUserEmail(e.target.value);
   };
+
   const nameHandler = (e) => {
     setUserData((prevData) => {
       return { ...prevData, name: e.target.value };
     });
+    setUserName(e.target.value);
   };
 
   const passwordHandler = (e) => {
@@ -166,6 +170,14 @@ function Register() {
         });
       }
     } else {
+      // console.log(resData.user.name);
+      // console.log(resData.user.email);
+
+      // setUserEmail(resData.user.name);
+      // setUserName(resData.user.email);
+
+      //setValues(resData.user.name, resData.user.email);
+
       const token = resData.token;
       localStorage.setItem("token", token);
       const expiration = new Date();

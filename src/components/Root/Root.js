@@ -1,8 +1,8 @@
-import { Outlet, useLoaderData,useSubmit } from 'react-router-dom';
-import { useEffect } from 'react';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
-import { getTokenDuration } from '../../Utils/auth';
+import { Outlet, useLoaderData, useSubmit } from "react-router-dom";
+import { useEffect } from "react";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
+import { getTokenDuration } from "../../Utils/auth";
 
 function RootLayout() {
   const token = useLoaderData();
@@ -13,8 +13,8 @@ function RootLayout() {
       return;
     }
 
-    if (token === 'EXPIRED') {
-      submit(null, { action: '/logout', method: 'post' });
+    if (token === "EXPIRED") {
+      submit(null, { action: "/logout", method: "post" });
       return;
     }
 
@@ -22,11 +22,9 @@ function RootLayout() {
     // console.log(tokenDuration);
 
     setTimeout(() => {
-      submit(null, { action: '/logout', method: 'post' });
+      submit(null, { action: "/logout", method: "post" });
     }, tokenDuration);
   }, [token, submit]);
-
-  
 
   return (
     <>
