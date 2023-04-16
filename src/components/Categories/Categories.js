@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Categories = ({ catName, catId }) => {
   return (
-    <div className="col-sm-6 row-padding">
+    <div className="col-sm-6 row-padding" data-testid="test-cat">
       <div className="card">
         <div className="card-body">
           <p className="card-text">{catName}</p>

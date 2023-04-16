@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from "react-redux";
 const ProductList = () => {
   const dispatch = useDispatch();
   const [sortOption, setSortOption] = useState("price_low_to_high");
-  const { category, product, loading, error } = useSelector(
+  const { product, loading, error } = useSelector(
     (state) => state.productSlice
   );
+  const { category } = useSelector((state) => state.categorySlice);
 
   if (product.length === 0 && loading != true) {
     dispatch(getProducts());

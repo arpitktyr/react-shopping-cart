@@ -5,13 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 import { useRouteLoaderData } from "react-router-dom";
-import { getCategories } from "./../../redux/reducer/productSlice";
+import { getCategories } from "./../../redux/reducer/categorySlice";
 
 const Header = () => {
   const dispatch = useDispatch();
   const token = useRouteLoaderData("root");
   const { category, categoryLoading } = useSelector(
-    (state) => state.productSlice
+    (state) => state.categorySlice
   );
 
   if (category.length === 0 && categoryLoading !== true) {

@@ -3,7 +3,7 @@ import { Link, redirect, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 function Login() {
-  const { setUserEmail, setUserName } = useContext(UserContext);
+  const userContextData = useContext(UserContext);
   const navigate = useNavigate();
   const [data, setData] = useState({});
 
@@ -110,8 +110,8 @@ function Login() {
       }
     } else {
       const token = resData.token;
-      setUserName(resData.name);
-      setUserEmail(resData.email);
+      userContextData.setUserName(resData.name);
+      userContextData.setUserEmail(resData.email);
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
@@ -179,6 +179,7 @@ function Login() {
 
             <button
               type="submit"
+              name="submit"
               disabled={isSubmitting}
               style={{ margin: "20px 0" }}
               className="btn btn-dark btn-block"

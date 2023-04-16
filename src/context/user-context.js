@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 export const UserContext = React.createContext(null);
 
 const UserContextProvider = (props) => {
-  const [userName, setUserName] = useState();
-  const [userEmail, setUserEmail] = useState();
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
   useEffect(() => {
     const storedContextData = localStorage.getItem("userContextData");

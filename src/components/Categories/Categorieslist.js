@@ -2,17 +2,17 @@ import Categories from "./Categories";
 
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories } from "../../redux/reducer/productSlice";
+import { getCategories } from "../../redux/reducer/categorySlice";
 
 const Categorieslist = () => {
   const dispatch = useDispatch();
   const { category, categoryLoading, categoryError } = useSelector(
-    (state) => state.productSlice
+    (state) => state.categorySlice
   );
 
-  if (category.length === 0 && categoryLoading !== true) {
-    dispatch(getCategories());
-  }
+  // if (category.length === 0 && categoryLoading !== true) {
+  //   dispatch(getCategories());
+  // }
   let headingStyle = {
     margin: "20px 0",
     fontSize: "25px",

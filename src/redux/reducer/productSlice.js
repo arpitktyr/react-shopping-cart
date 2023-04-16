@@ -4,20 +4,10 @@ import { Constants } from "../../Constants/Index";
 const { apiUrl } = Constants;
 
 const product = {
-  category: [],
   product: [],
   loading: false,
   error: "",
-  categoryLoading: false,
-  categoryError: "",
 };
-export const getCategories = createAsyncThunk(
-  "getCategory",
-  async (thunkAPI) => {
-    let apiRes = await getWrapper(apiUrl + "category");
-    return apiRes.data.category;
-  }
-);
 
 export const getProducts = createAsyncThunk("getProduct", async (thunkAPI) => {
   let apiRes = await getWrapper(apiUrl + "products/");
@@ -28,20 +18,6 @@ const productSlice = createSlice({
   name: "productData",
   initialState: product,
   extraReducers: (builder) => {
-    builder.addCase(getCategories.pending, (state, action) => {
-      state.categoryLoading = true;
-    });
-
-    builder.addCase(getCategories.fulfilled, (state, action) => {
-      state.categoryLoading = false;
-      state.category = action.payload;
-    });
-
-    builder.addCase(getCategories.rejected, (state, action) => {
-      state.categoryLoading = false;
-      state.categoryError = action.error.message;
-    });
-
     builder.addCase(getProducts.pending, (state, action) => {
       state.loading = true;
     });
