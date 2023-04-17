@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
@@ -21,6 +21,13 @@ function Register() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [signup, setSignup] = useState(false);
+
+  if (signup === true) {
+    setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 1000);
+  }
 
   const emailHandler = (e) => {
     setUserData((prevData) => {
@@ -170,20 +177,12 @@ function Register() {
         });
       }
     } else {
-      // console.log(resData.user.name);
-      // console.log(resData.user.email);
-
-      // setUserEmail(resData.user.name);
-      // setUserName(resData.user.email);
-
-      //setValues(resData.user.name, resData.user.email);
-
       const token = resData.token;
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
       localStorage.setItem("expiration", expiration.toISOString());
-      navigate("/", { replace: true });
+      setSignup(true);
     }
   };
 
@@ -197,6 +196,11 @@ function Register() {
             onSubmit={submitHandler}
           >
             <h1 className="form-title">Create a new user</h1>
+            {signup && (
+              <div className="alert alert-success" aria-live="polite">
+                Registered Successfully, Will redirected to Homepage.
+              </div>
+            )}
             {data && data.errors && (
               <ul>
                 {Object.values(data.errors).map((err) => (

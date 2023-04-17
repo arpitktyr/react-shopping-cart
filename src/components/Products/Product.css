@@ -141,3 +141,6 @@ ul.breadcrumb li a {
 ul.breadcrumb li a:hover {
   text-decoration: underline;
 }
+.page-item:not(.active) .page-link {
+  cursor: pointer;
+}

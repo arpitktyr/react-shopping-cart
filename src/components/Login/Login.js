@@ -14,6 +14,13 @@ function Login() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [login, setLogin] = useState(false);
+
+  if (login === true) {
+    setTimeout(() => {
+      navigate("/", { replace: true });
+    }, 1000);
+  }
 
   const emailHandler = (e) => {
     setUserData((prevData) => {
@@ -116,7 +123,7 @@ function Login() {
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
       localStorage.setItem("expiration", expiration.toISOString());
-      navigate("/", { replace: true });
+      setLogin(true);
     }
   };
 
@@ -130,6 +137,11 @@ function Login() {
             onSubmit={submitHandler}
           >
             <h1 className="form-title">Log in</h1>
+            {login && (
+              <div className="alert alert-success" aria-live="polite">
+                Login Successfull, You will redirected to Homepage.
+              </div>
+            )}
             {data && data.errors && (
               <ul>
                 {Object.values(data.errors).map((err) => (

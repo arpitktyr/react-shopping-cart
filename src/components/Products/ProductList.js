@@ -15,7 +15,7 @@ const ProductList = () => {
   );
   const { category } = useSelector((state) => state.categorySlice);
 
-  if (product.length === 0 && loading != true) {
+  if (product.length === 0 && loading !== true) {
     dispatch(getProducts());
   }
 
@@ -54,7 +54,7 @@ const ProductList = () => {
   }
   // Handle page click event
   function handlePageClick(page) {
-    if (page != currentPage) setCurrentPage(page);
+    if (page !== currentPage) setCurrentPage(page);
   }
 
   function handleItemsPerPageChange(event) {
@@ -113,9 +113,9 @@ const ProductList = () => {
           </ul>
           <ul className="list-group subcategory mt-4">
             <li className="list-group-item">
-              <div className="mb-2" id="itemPerPage">
+              <label className="mb-2" htmlFor="pagecount">
                 Items Per Page
-              </div>
+              </label>
               <select
                 aria-labelledby="itemPerPage"
                 id="pagecount"
