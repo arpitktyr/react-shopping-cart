@@ -9,8 +9,7 @@ const UserContextProvider = (props) => {
     const storedContextData = localStorage.getItem("userContextData");
 
     if (storedContextData) {
-      const { userName: name, userEmail: email } =
-        JSON.parse(storedContextData);
+      const { name, email } = JSON.parse(storedContextData);
       setUserName(name);
       setUserEmail(email);
     }
@@ -19,7 +18,7 @@ const UserContextProvider = (props) => {
   useEffect(() => {
     localStorage.setItem(
       "userContextData",
-      JSON.stringify({ userName, userEmail })
+      JSON.stringify({ name: userName, email: userEmail })
     );
   }, [userName, userEmail]);
 

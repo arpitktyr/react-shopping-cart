@@ -13,13 +13,11 @@ import UserContextProvider from "./context/user-context";
 
 const root = ReactDOMClient.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <UserContextProvider>
-        <App />
-      </UserContextProvider>
-    </Provider>
-  </React.StrictMode>
+  <Provider store={store}>
+    <UserContextProvider>
+      <App />
+    </UserContextProvider>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import EditProfile from "./EditProfile";
 import { UserContext } from "../../context/user-context";
 
 const Profile = () => {
   const { userName, userEmail } = useContext(UserContext);
+
   const [userData, setUserData] = useState({
     name: userName,
     email: userEmail,
@@ -11,6 +12,11 @@ const Profile = () => {
     address: "Kanpur, Uttar Pradesh",
     mobile: "9956455678",
   });
+
+  useEffect(() => {
+    const data = { ...userData, email: userEmail, name: userName };
+    setUserData(data);
+  }, [userEmail, userName]);
 
   const handleSave = (newUserData) => {
     console.log(newUserData);

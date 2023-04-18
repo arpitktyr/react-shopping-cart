@@ -39,67 +39,58 @@ const EditProfile = ({ userData, onSave }) => {
   };
 
   return (
-    
-    <form onSubmit={handleSubmit} style={{width: "100%", display: "flex", flexDirection: "column"}}>
-    <div className="form-group">
-      <label>
-        Name:  </label>
+    <form
+      onSubmit={handleSubmit}
+      style={{ width: "100%", display: "flex", flexDirection: "column" }}
+    >
+      <div className="form-group">
+        <label>Name: </label>
         <input
           className="form-control"
           type="text"
           value={name}
           onChange={handleNameChange}
         />
-     
-    </div>
-    <div className="form-group">
-      <label>
-        Email: </label>
+      </div>
+      <div className="form-group">
+        <label>Email: </label>
         <input
           className="form-control"
           type="email"
           value={email}
           onChange={handleEmailChange}
         />
-      
-    </div>
-    <div className="form-group">
-      <label>
-        Pincode: </label>
+      </div>
+      <div className="form-group">
+        <label>Pincode: </label>
         <input
           className="form-control"
           type="text"
           value={pincode}
           onChange={handlePincodeChange}
         />
-      
-    </div>
-    <div className="form-group">
-      <label>
-        Address: </label>
+      </div>
+      <div className="form-group">
+        <label>Address: </label>
         <textarea
           className="form-control"
           value={address}
           onChange={handleAddressChange}
         />
-      
-    </div>
-    <div className="form-group">
-      <label>
-        Mobile:  </label>
+      </div>
+      <div className="form-group">
+        <label>Mobile: </label>
         <input
           className="form-control"
           type="text"
           value={mobile}
           onChange={handleMobileChange}
         />
-     
-    </div>
-    <button className="btn btn-success" type="submit">
-      Save
-    </button>
-  </form>
-      
+      </div>
+      <button className="btn btn-success" type="submit">
+        Save
+      </button>
+    </form>
   );
 };
 
