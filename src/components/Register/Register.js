@@ -1,11 +1,19 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 
 function Register() {
   const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
+  const token = useRouteLoaderData("root");
+
+  useEffect(() => {
+    if (token && token !== "EXPIRED") {
+      navigate("/Profile", { replace: true });
+    }
+  }, [token, navigate]);
+
   const [data, setData] = useState({});
   const [userData, setUserData] = useState({
     name: "",
@@ -25,7 +33,7 @@ function Register() {
 
   if (signup === true) {
     setTimeout(() => {
-      navigate("/", { replace: true });
+      navigate("/Profile", { replace: true });
     }, 1000);
   }
 
