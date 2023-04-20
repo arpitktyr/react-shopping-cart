@@ -2,8 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
+import { useForm } from "react-hook-form";
 
 function Register() {
+  const form = useForm();
+  const { register, handleSubmit, getValues } = form;
+  const { errors } = form.formState;
   const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
   const token = useRouteLoaderData("root");
@@ -15,18 +19,6 @@ function Register() {
   }, [token, navigate]);
 
   const [data, setData] = useState({});
-  const [userData, setUserData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const [inputError, setInputError] = useState({
-    emailError: "",
-    passwordError: "",
-    nameError: "",
-    confirmPasswordError: "",
-  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [signup, setSignup] = useState(false);
@@ -37,127 +29,8 @@ function Register() {
     }, 1000);
   }
 
-  const emailHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, email: e.target.value };
-    });
-    setUserEmail(e.target.value);
-  };
-
-  const nameHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, name: e.target.value };
-    });
-    setUserName(e.target.value);
-  };
-
-  const passwordHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, password: e.target.value };
-    });
-  };
-
-  const confirmPasswordHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, confirmPassword: e.target.value };
-    });
-  };
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setInputError({ email: "", password: "" });
+  const formSubmitHandler = async (userData) => {
     setData({ message: "", errors: {} });
-    // console.log(userData);
-    const { email, password, name, confirmPassword } = userData;
-    const nameRegex = /^[a-zA-Z ]+$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!name) {
-      setInputError((prevData) => {
-        return { ...prevData, nameError: "Please enter a Name." };
-      });
-      return;
-    } else if (!nameRegex.test(name)) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          nameError: "Only aphabet letters are allowed.",
-        };
-      });
-      return;
-    }
-    if (name.length > 20 || name.length < 4) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          nameError:
-            "Name length should be greater then 4 character and not more than 20 character.",
-        };
-      });
-      return;
-    } else {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          nameError: "",
-        };
-      });
-    }
-
-    if (!email) {
-      setInputError((prevData) => {
-        return { ...prevData, emailError: "Please enter a email address." };
-      });
-      return;
-    } else if (!emailRegex.test(email)) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          emailError: "That doesn't look like an email address",
-        };
-      });
-      return;
-    } else {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          emailError: "",
-        };
-      });
-    }
-
-    if (!password) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "Please enter a password.",
-        };
-      });
-      return;
-    } else if (password.length < 6) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "Password must be at least 8 characters long",
-        };
-      });
-      return;
-    } else {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "",
-        };
-      });
-    }
-    if (password !== confirmPassword) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          confirmPasswordError: "Please does not match.",
-        };
-      });
-      return;
-    }
 
     setIsSubmitting(true);
     const response = await fetch(
@@ -186,6 +59,8 @@ function Register() {
       }
     } else {
       const token = resData.token;
+      setUserEmail(resData.user.email);
+      setUserName(resData.user.name);
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
@@ -201,7 +76,8 @@ function Register() {
           <form
             className="form-container"
             method="post"
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit(formSubmitHandler)}
+            noValidate
           >
             <h1 className="form-title">Create a new user</h1>
             {signup && (
@@ -230,12 +106,18 @@ function Register() {
                 id="name"
                 className="form-control"
                 placeholder="Enter Name"
-                onChange={nameHandler}
-                value={userData.name}
+                {...register("name", {
+                  required: {
+                    value: true,
+                    message: "Name is required.",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z ]+$/,
+                    message: "Invalid name.",
+                  },
+                })}
               />
-              {inputError.nameError && (
-                <span className="text-danger">{inputError.nameError}</span>
-              )}
+              <span className="text-danger">{errors.name?.message}</span>
             </div>
             <div className="form-group">
               <label htmlFor="email"> Email </label>
@@ -245,12 +127,18 @@ function Register() {
                 id="email"
                 className="form-control"
                 placeholder="Enter email"
-                onChange={emailHandler}
-                value={userData.email}
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is required.",
+                  },
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format.",
+                  },
+                })}
               />
-              {inputError.emailError && (
-                <span className="text-danger">{inputError.emailError}</span>
-              )}
+              <span className="text-danger">{errors.email?.message}</span>
             </div>
             <div className="form-group">
               <label htmlFor="password"> Password </label>
@@ -260,12 +148,23 @@ function Register() {
                 name="password"
                 placeholder="Enter password"
                 id="password"
-                onChange={passwordHandler}
-                value={userData.password}
+                {...register("password", {
+                  required: {
+                    value: true,
+                    message: "Password is required.",
+                  },
+                  minLength: {
+                    value: 6,
+                    message: "Password should be at least 6 characters long.",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message:
+                      "Password should not be at more than 20 characters long.",
+                  },
+                })}
               />
-              {inputError.passwordError && (
-                <span className="text-danger">{inputError.passwordError}</span>
-              )}
+              <span className="text-danger">{errors.password?.message}</span>
             </div>
             <div className="form-group">
               <label htmlFor="confirmPassword"> Confirm Password </label>
@@ -275,14 +174,20 @@ function Register() {
                 name="confirmPassword"
                 placeholder="Enter password"
                 id="confirmPassword"
-                onChange={confirmPasswordHandler}
-                value={userData.confirmPassword}
+                {...register("confirmPassword", {
+                  required: {
+                    value: true,
+                    message: "Confirm Password is required",
+                  },
+                  validate: (value) => {
+                    const { password } = getValues();
+                    return password === value || "Password does not match.";
+                  },
+                })}
               />
-              {inputError.confirmPasswordError && (
-                <span className="text-danger">
-                  {inputError.confirmPasswordError}
-                </span>
-              )}
+              <span className="text-danger">
+                {errors.confirmPassword?.message}
+              </span>
             </div>
 
             <button

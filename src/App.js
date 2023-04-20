@@ -5,13 +5,8 @@ import Contact from "./components/Contact/Contact";
 import ProductList from "./components/Products/ProductList";
 import Login, { logoutAction } from "./components/Login/Login";
 import Register from "./components/Register/Register";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
 import ProductDetail from "./components/Products/ProductDetail";
 import Errorpage from "./components/Errorpage/Errorpage";
 import { checkAuthLoader, tokenLoader } from "./Utils/auth";
@@ -80,6 +75,7 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  //this is the old code which i used for routing
   // return (
   //   <div className="App">
   //     <BrowserRouter>
@@ -103,6 +99,7 @@ function App() {
   //     </BrowserRouter>
   //   </div>
   // );
+
   return <RouterProvider router={router}></RouterProvider>;
 }
 

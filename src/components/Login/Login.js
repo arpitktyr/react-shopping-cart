@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import {
   Link,
   redirect,
@@ -7,7 +8,11 @@ import {
 } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
+
 function Login() {
+  const form = useForm();
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
   const userContextData = useContext(UserContext);
   const navigate = useNavigate();
   const token = useRouteLoaderData("root");
@@ -19,13 +24,6 @@ function Login() {
   }, [token, navigate]);
 
   const [data, setData] = useState({});
-
-  const [userData, setUserData] = useState({ email: "", password: "" });
-  const [inputError, setInputError] = useState({
-    emailError: "",
-    passwordError: "",
-  });
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [login, setLogin] = useState(false);
 
@@ -34,74 +32,8 @@ function Login() {
       navigate("/Profile", { replace: true });
     }, 1000);
   }
-
-  const emailHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, email: e.target.value };
-    });
-  };
-
-  const passwordHandler = (e) => {
-    setUserData((prevData) => {
-      return { ...prevData, password: e.target.value };
-    });
-  };
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setInputError({ email: "", password: "" });
+  const formSubmitHandler = async (userData) => {
     setData({ message: "", errors: {} });
-    // console.log(userData);
-    const { email, password } = userData;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email) {
-      setInputError((prevData) => {
-        return { ...prevData, emailError: "Please enter a email address." };
-      });
-      return;
-    } else if (!emailRegex.test(email)) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          emailError: "That doesn't look like an email address",
-        };
-      });
-      return;
-    } else {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          emailError: "",
-        };
-      });
-    }
-
-    if (!password) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "Please enter a password.",
-        };
-      });
-      return;
-    } else if (password.length < 6) {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "Password must be at least 8 characters long",
-        };
-      });
-      return;
-    } else {
-      setInputError((prevData) => {
-        return {
-          ...prevData,
-          passwordError: "",
-        };
-      });
-    }
-
     setIsSubmitting(true);
     const response = await fetch(
       "https://node-cart-backend.onrender.com/login",
@@ -115,8 +47,6 @@ function Login() {
     );
     setIsSubmitting(false);
     const resData = await response.json();
-    //console.log(resData);
-
     if (!response.ok) {
       if (resData.message) {
         setData((prevData) => {
@@ -147,7 +77,8 @@ function Login() {
           <form
             className="form-container"
             method="post"
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit(formSubmitHandler)}
+            noValidate
           >
             <h1 className="form-title">Log in</h1>
             {login && (
@@ -172,33 +103,40 @@ function Login() {
             <div className="form-group">
               <label htmlFor="email"> Email </label>
               <input
-                aria-label="Email"
                 type="email"
                 name="email"
                 id="email"
                 className="form-control"
                 placeholder="Enter email"
-                onChange={emailHandler}
-                value={userData.email}
+                {...register("email", {
+                  required: {
+                    value: true,
+                    message: "Email is required.",
+                  },
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Invalid email format.",
+                  },
+                })}
               />
-              {inputError.emailError && (
-                <span className="text-danger">{inputError.emailError}</span>
+              {errors.email && (
+                <span className="text-danger">{errors.email?.message}</span>
               )}
             </div>
             <div className="form-group">
               <label htmlFor="password"> Password </label>
               <input
-                aria-label="Password"
                 type="password"
                 className="form-control"
                 name="password"
                 placeholder="Enter password"
                 id="password"
-                onChange={passwordHandler}
-                value={userData.password}
+                {...register("password", {
+                  required: { value: true, message: "Password is required." },
+                })}
               />
-              {inputError.passwordError && (
-                <span className="text-danger">{inputError.passwordError}</span>
+              {errors.password && (
+                <span className="text-danger">{errors.password?.message}</span>
               )}
             </div>
 
