@@ -28,7 +28,7 @@ describe("Check Categories", () => {
   test("able to see categories", async () => {
     render(<MockCategories />);
     //eslint-disable-next-line
-    //screen.debug();
+    screen.debug();
     const cat = screen.getByRole("link");
     expect(cat).toBeInDocument();
   });
