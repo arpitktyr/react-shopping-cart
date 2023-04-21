@@ -9,7 +9,7 @@ const MockLogin = () => {
   );
 };
 
-test("Test that Login Page have heading", () => {
+test("that Login Page have heading", () => {
   render(<MockLogin />);
   const text = screen.getByText(/Log in/i);
   expect(text).toBeInTheDocument();
@@ -37,15 +37,8 @@ it("should be able to type into input", () => {
 });
 
 describe("Many testcases bundled into it", () => {
-  const mockLogin = jest.fn(() => Promise.resolve());
-
-  beforeEach(() => {
-    render(
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
-    );
-  });
+  render(<MockLogin />);
+  const mockLoginRe = jest.fn(() => Promise.resolve());
 
   it("User is able to able to login on with submit button", () => {
     const mockUser = {

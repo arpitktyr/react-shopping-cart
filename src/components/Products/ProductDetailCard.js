@@ -19,6 +19,7 @@ const ProductDetailCard = (props) => {
         setQuantity(element.qty);
       }
     });
+    //eslint-disable-next-line
   }, []);
 
   const onChangeHandler = (event) => {

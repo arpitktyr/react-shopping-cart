@@ -12,8 +12,7 @@ const Orders = () => {
       <h1 className="text-center">Order History</h1>
       <div className="list-group">
         {orders.map((order) => (
-          <a
-            href="#"
+          <button
             className="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
             key={order.id}
           >
@@ -22,7 +21,7 @@ const Orders = () => {
               <div>Date: {order.date}</div>
             </div>
             <div>Total: INR {order.total.toFixed(2)}</div>
-          </a>
+          </button>
         ))}
       </div>
     </div>
