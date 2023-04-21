@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import "./Product.css";
@@ -35,45 +35,58 @@ const ProductList = () => {
   const firstIndex = lastIndex - itemsPerPage;
   const [totalPages, setTotalPages] = useState(1);
 
-  const filterCategory = (name, product) => {
-    let res = product.filter((product) => {
-      return name === product.catId;
-    });
-    const sortedProducts = sort(res);
-    setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
-    setproducts(sortedProducts.slice(firstIndex, lastIndex));
-  };
+  const filterCategory = useCallback(
+    (name, product) => {
+      const sort = (products) => {
+        return [...products].sort((a, b) => {
+          if (sortOption === "price_low_to_high") {
+            return a.price - b.price;
+          } else if (sortOption === "price_high_to_low") {
+            return b.price - a.price;
+          } else {
+            return null;
+          }
+        });
+      };
+
+      let res = product.filter((product) => {
+        return name === product.catId;
+      });
+      const sortedProducts = sort(res);
+      setTotalPages(Math.ceil(sortedProducts.length / itemsPerPage));
+      setproducts(sortedProducts.slice(firstIndex, lastIndex));
+    },
+    [firstIndex, itemsPerPage, lastIndex, sortOption]
+  );
 
   useEffect(() => {
     filterCategory(catId, product);
-  }, [catId, product, sortOption, currentPage, itemsPerPage]);
+  }, [catId, product, sortOption, currentPage, itemsPerPage, filterCategory]);
 
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);
   }
-  // Handle page click event
-  function handlePageClick(page) {
-    if (page !== currentPage) setCurrentPage(page);
+
+  if (pageNumbers.slice(-1)) {
+    const [lastPage] = pageNumbers.slice(-1);
+    if (currentPage > lastPage) {
+      setCurrentPage(1);
+    }
   }
 
-  function handleItemsPerPageChange(event) {
+  // Handle page click event
+  const handlePageClick = (page) => {
+    if (page !== currentPage) setCurrentPage(page);
+  };
+
+  const handleItemsPerPageChange = (event) => {
     setItemsPerPage(parseInt(event.target.value));
     setCurrentPage(1);
-  }
+  };
 
   const handleSortOptionChange = (event) => {
     setSortOption(event.target.value);
-  };
-
-  const sort = (products) => {
-    return [...products].sort((a, b) => {
-      if (sortOption === "price_low_to_high") {
-        return a.price - b.price;
-      } else if (sortOption === "price_high_to_low") {
-        return b.price - a.price;
-      }
-    });
   };
 
   const renderProducts = (
@@ -122,7 +135,6 @@ const ProductList = () => {
                 className="form-control"
                 onChange={handleItemsPerPageChange}
               >
-                {" "}
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -155,16 +167,18 @@ const ProductList = () => {
                   {pageNumbers.map((number) => (
                     <li
                       className={
-                        currentPage == number ? "page-item active" : "page-item"
+                        currentPage === number
+                          ? "page-item active"
+                          : "page-item"
                       }
                       key={number}
                     >
-                      <a
+                      <button
                         className="page-link"
                         onClick={() => handlePageClick(number)}
                       >
                         {number}
-                      </a>
+                      </button>
                     </li>
                   ))}
                 </ul>

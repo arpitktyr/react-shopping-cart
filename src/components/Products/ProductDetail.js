@@ -15,7 +15,8 @@ const ProductDetail = () => {
   if (product.length === 0 && loading !== true) {
     dispatch(getProducts());
   }
-  const products = product.find((item) => item.id == pid);
+
+  const products = product.find((item) => parseInt(item.id) === parseInt(pid));
   const productRender = (
     <div className="container">
       <div>

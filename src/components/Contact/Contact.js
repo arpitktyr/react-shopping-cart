@@ -17,7 +17,7 @@ const Contact = () => {
             allowfullscreen=""
             style={mapStyle}
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            title="Google map location"
           ></iframe>
         </div>
         <div className="col-sm-6">
