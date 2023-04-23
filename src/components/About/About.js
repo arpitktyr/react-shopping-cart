@@ -1,5 +1,5 @@
 import "./About.css";
-import { aboutMission, aboutPara, aboutVision, aboutHeading } from "./Constant";
+import Constant from "./Constant";
 
 import { Link } from "react-router-dom";
 const About = () => {
@@ -11,13 +11,13 @@ const About = () => {
         width="400"
       />
       <div>
-        <h1>{aboutHeading}</h1>
+        <h1>{Constant.aboutHeading}</h1>
         <p>
-          {aboutPara}
+          {Constant.aboutPara}
           <br />
-          {aboutMission}
+          {Constant.aboutMission}
           <br />
-          {aboutVision}
+          {Constant.aboutVision}
         </p>
       </div>
 
