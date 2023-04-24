@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Login from "./Login";
 
@@ -46,8 +46,22 @@ it("should be able to type into input", () => {
   expect(passwordElement.value).toBe("amanktyr");
 });
 
+test("able to produce validation errors", async () => {
+  render(<MockLogin />);
+  fireEvent.blur(screen.getByLabelText("Email"));
+  fireEvent.blur(screen.getByLabelText("Password"));
+
+  // Assert that error messages are displayed
+  await waitFor(() => {
+    expect(screen.getByText("Password is required.")).toBeInTheDocument();
+  });
+  await waitFor(() => {
+    expect(screen.getByText("Email is required.")).toBeInTheDocument();
+  });
+});
+
 describe("Many testcases bundled into it", () => {
-  it("User is able to able to login  with submit button", () => {
+  it("User is able to able to login  with submit button", async () => {
     render(<MockLogin />);
     const mockUser = {
       token:
@@ -78,6 +92,8 @@ describe("Many testcases bundled into it", () => {
       btn.dispatchEvent(new MouseEvent("click"));
     });
 
-    expect(window.location.pathname).toBe("/");
+    await waitFor(() => {
+      expect(window.location.pathname).toBe("/");
+    });
   });
 });

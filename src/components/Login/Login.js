@@ -10,7 +10,7 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 
 function Login() {
-  const form = useForm();
+  const form = useForm({ mode: "onBlur" });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const userContextData = useContext(UserContext);

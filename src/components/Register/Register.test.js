@@ -58,16 +58,14 @@ test("should be able to type into input Types", () => {
   expect(confirmPasswordInput.value).toBe("password123");
 });
 
-test("see errors", async () => {
+test("able to produce validation errors", async () => {
   render(<MockRegister />);
-  // Trigger blur event on input fields
 
   fireEvent.blur(screen.getByLabelText("Name"));
   fireEvent.blur(screen.getByLabelText("Email"));
   fireEvent.blur(screen.getByLabelText("Password"));
   fireEvent.blur(screen.getByLabelText("Confirm Password"));
 
-  // Assert that error messages are displayed
   await waitFor(() => {
     expect(screen.getByText("Name is required.")).toBeInTheDocument();
   });
