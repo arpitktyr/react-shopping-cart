@@ -5,18 +5,19 @@ import { UserContext } from "../../context/user-context";
 import { useForm } from "react-hook-form";
 
 function Register() {
-  const form = useForm();
+  const form = useForm({ mode: "onBlur" });
   const { register, handleSubmit, getValues } = form;
   const { errors } = form.formState;
   const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
-  const token = useRouteLoaderData("root");
+  //for redirecting already logged in
+  // const token = useRouteLoaderData("root");
 
-  useEffect(() => {
-    if (token && token !== "EXPIRED") {
-      navigate("/Profile", { replace: true });
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (token && token !== "EXPIRED") {
+  //     navigate("/Profile", { replace: true });
+  //   }
+  // }, [token, navigate]);
 
   const [data, setData] = useState({});
 
@@ -177,7 +178,7 @@ function Register() {
                 {...register("confirmPassword", {
                   required: {
                     value: true,
-                    message: "Confirm Password is required",
+                    message: "Confirm Password is required.",
                   },
                   validate: (value) => {
                     const { password } = getValues();
