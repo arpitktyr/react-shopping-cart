@@ -25,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom='src/components/**/*.js'",
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
@@ -48,6 +49,16 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "msw": "^1.2.1"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": "75",
+        "lines": "75",
+        "statements": "-10"
+      }
+    }
   }
 }

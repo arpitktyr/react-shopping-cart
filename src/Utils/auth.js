@@ -36,3 +36,9 @@ export function checkAuthLoader() {
     return redirect("/login");
   }
 }
+
+export function logoutAction() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("expiration");
+  return redirect("/Login");
+}

@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+
 import { BrowserRouter } from "react-router-dom";
 import Categorieslist from "./Categorieslist";
 import Categories from "./Categories";
@@ -24,13 +25,21 @@ const MockCategories = () => {
     </Provider>
   );
 };
+
 describe("Check Categories", () => {
-  test("able to see categories", async () => {
+  test("able to see categories", () => {
     render(<MockCategories />);
-    //eslint-disable-next-line
-    screen.debug();
     const cat = screen.getByRole("link");
-    expect(cat).toBeInDocument();
+    const catName = screen.getByText(/Jewellery/i);
+    expect(catName).toBeInTheDocument();
+    expect(cat).toHaveTextContent(/Explore/i);
+  });
+
+  test("able to navigate to product page", () => {
+    render(<MockCategories />);
+    const catBtn = screen.getByRole("link");
+    fireEvent.click(catBtn);
+    expect(window.location.pathname).toBe("/products/1000");
   });
 
   //   it("User is able to able to see the all categories", async () => {

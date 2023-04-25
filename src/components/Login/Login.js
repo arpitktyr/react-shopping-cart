@@ -10,18 +10,19 @@ import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 
 function Login() {
-  const form = useForm();
+  const form = useForm({ mode: "onBlur" });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const userContextData = useContext(UserContext);
   const navigate = useNavigate();
-  const token = useRouteLoaderData("root");
+  //for redirecting already logged in
+  // const token = useRouteLoaderData("root");
 
-  useEffect(() => {
-    if (token && token !== "EXPIRED") {
-      navigate("/Profile", { replace: true });
-    }
-  }, [token, navigate]);
+  // useEffect(() => {
+  //   if (token && token !== "EXPIRED") {
+  //     navigate("/Profile", { replace: true });
+  //   }
+  // }, [token, navigate]);
 
   const [data, setData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -166,9 +167,3 @@ function Login() {
 }
 
 export default Login;
-
-export function logoutAction() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("expiration");
-  return redirect("/Login");
-}

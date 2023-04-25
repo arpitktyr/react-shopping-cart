@@ -3,13 +3,13 @@ import About from "./components/About/About";
 import Home from "./components/Home/Home";
 import Contact from "./components/Contact/Contact";
 import ProductList from "./components/Products/ProductList";
-import Login, { logoutAction } from "./components/Login/Login";
+import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import ProductDetail from "./components/Products/ProductDetail";
 import Errorpage from "./components/Errorpage/Errorpage";
-import { checkAuthLoader, tokenLoader } from "./Utils/auth";
+import { checkAuthLoader, tokenLoader, logoutAction } from "./Utils/auth";
 import Orders from "./components/Orders/Orders";
 import Cart from "./components/Cart/Cart";
 import RootLayout from "./components/Root/Root";
