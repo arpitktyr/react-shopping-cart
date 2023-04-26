@@ -1,11 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import {
-  Link,
-  redirect,
-  useNavigate,
-  useRouteLoaderData,
-} from "react-router-dom";
+import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 
@@ -16,13 +11,13 @@ function Login() {
   const userContextData = useContext(UserContext);
   const navigate = useNavigate();
   //for redirecting already logged in
-  // const token = useRouteLoaderData("root");
+  const token = useRouteLoaderData("root");
 
-  // useEffect(() => {
-  //   if (token && token !== "EXPIRED") {
-  //     navigate("/Profile", { replace: true });
-  //   }
-  // }, [token, navigate]);
+  useEffect(() => {
+    if (token && token !== "EXPIRED") {
+      navigate("/Profile", { replace: true });
+    }
+  }, [token, navigate]);
 
   const [data, setData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);

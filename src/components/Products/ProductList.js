@@ -147,7 +147,7 @@ const ProductList = () => {
         </div>
         <div className="col-lg-9">
           <h1 className="text-center all-product-heading">{categoryName}</h1>
-          <div className="row">
+          <div className="row" data-testid="product-list">
             {products.length ? (
               products.map((product) => (
                 <ProductCard data={product} key={product.id} />

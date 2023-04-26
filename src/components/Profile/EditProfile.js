@@ -44,50 +44,55 @@ const EditProfile = ({ userData, onSave }) => {
       style={{ width: "100%", display: "flex", flexDirection: "column" }}
     >
       <div className="form-group">
-        <label>Name: </label>
+        <label htmlFor="name">Name </label>
         <input
           className="form-control"
           type="text"
+          id="name"
           value={name}
           onChange={handleNameChange}
         />
       </div>
       <div className="form-group">
-        <label>Email: </label>
+        <label htmlFor="email">Email</label>
         <input
           className="form-control"
           type="email"
+          id="email"
           value={email}
           onChange={handleEmailChange}
         />
       </div>
       <div className="form-group">
-        <label>Pincode: </label>
+        <label htmlFor="pincode">Pincode</label>
         <input
           className="form-control"
           type="text"
+          id="pincode"
           value={pincode}
           onChange={handlePincodeChange}
         />
       </div>
       <div className="form-group">
-        <label>Address: </label>
+        <label htmlFor="address">Address</label>
         <textarea
           className="form-control"
+          id="address"
           value={address}
           onChange={handleAddressChange}
         />
       </div>
       <div className="form-group">
-        <label>Mobile: </label>
+        <label htmlFor="mobile">Mobile</label>
         <input
           className="form-control"
           type="text"
+          id="mobile"
           value={mobile}
           onChange={handleMobileChange}
         />
       </div>
-      <button className="btn btn-success" type="submit">
+      <button name="save" className="btn btn-success" type="submit">
         Save
       </button>
     </form>

@@ -1,28 +1,22 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-
 import { BrowserRouter } from "react-router-dom";
 import Categorieslist from "./Categorieslist";
 import Categories from "./Categories";
-import store from "../../redux/store";
-import { Provider } from "react-redux";
+import { renderWithProviders } from "../../Utils/test-utils";
 
 const MockCategoriesList = () => {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Categorieslist />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <Categorieslist />
+    </BrowserRouter>
   );
 };
 
 const MockCategories = () => {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Categories catName="Jewellery" catId="1000" />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <Categories catName="Jewellery" catId="1000" />
+    </BrowserRouter>
   );
 };
 
@@ -42,37 +36,65 @@ describe("Check Categories", () => {
     expect(window.location.pathname).toBe("/products/1000");
   });
 
-  //   it("User is able to able to see the all categories", async () => {
-  //     window.fetch = jest.fn();
-  //     window.fetch.mockResolvedValueOnce({
-  //       json: async () => [
-  //         {
-  //           category: [
-  //             {
-  //               name: "Men's clothing",
-  //               catId: "100",
-  //             },
-  //             {
-  //               name: "Women's clothing",
-  //               catId: "101",
-  //             },
-  //             {
-  //               name: "Electronics",
-  //               catId: "102",
-  //             },
-  //             {
-  //               name: "Jewellery",
-  //               catId: "103",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     });
+  test("Category List Testing", async () => {
+    const categoriesData = {
+      category: [
+        {
+          name: "Men's clothing",
+          catId: "100",
+        },
+        {
+          name: "Women's clothing",
+          catId: "101",
+        },
+        {
+          name: "Electronics",
+          catId: "102",
+        },
+        {
+          name: "Jewellery",
+          catId: "103",
+        },
+      ],
+      categoryLoading: false,
+      categoryError: "",
+    };
+    renderWithProviders(<MockCategoriesList />, {
+      preloadedState: {
+        categorySlice: categoriesData,
+      },
+    });
+    const list = await screen.findAllByTestId("test-cat");
+    expect(list.length).toBe(4);
+  });
 
-  //     render(<mockCategoriesList />);
-  //     // const listItemElements = await screen.findAllByTestId("test-cat");
-  //     // expect(listItemElements).not.toHaveLength(0);
-  //     const listItemElement1 = await screen.findByText("Men's clothing");
-  //     expect(listItemElement1).toBeInDocument();
-  //   });
+  test("Category should show loading state", async () => {
+    const categoriesData = {
+      category: [],
+      categoryLoading: true,
+      categoryError: "",
+    };
+    renderWithProviders(<MockCategoriesList />, {
+      preloadedState: {
+        categorySlice: categoriesData,
+      },
+    });
+    const loading = await screen.findByTestId("loading-spinner");
+    expect(loading).toBeInTheDocument();
+  });
+
+  test("Category should show Errors", async () => {
+    const categoriesData = {
+      category: [],
+      categoryLoading: false,
+      categoryError: "Something went wrong.",
+    };
+    renderWithProviders(<MockCategoriesList />, {
+      preloadedState: {
+        categorySlice: categoriesData,
+      },
+    });
+    const error = await screen.findByText("Something went wrong.");
+    expect(error).toBeInTheDocument();
+  });
 });

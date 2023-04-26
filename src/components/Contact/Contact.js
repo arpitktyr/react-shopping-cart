@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const Contact = () => {
   const navigate = useNavigate();
-  const form = useForm();
+  const form = useForm({ mode: "onBlur" });
   const { register, handleSubmit, formState } = form;
   const { errors } = formState;
   const [msg, setMsg] = useState("");
@@ -74,7 +74,7 @@ const Contact = () => {
               <span className="text-danger">{errors.email?.message}</span>
             </div>
             <div className="form-group">
-              <label htmlFor="number">Phone Number</label>
+              <label htmlFor="mobnumber">Phone Number</label>
               <input
                 type="text"
                 className="form-control"

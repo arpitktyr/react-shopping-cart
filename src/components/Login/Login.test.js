@@ -1,17 +1,30 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Login from "./Login";
-
 import { Provider } from "react-redux";
+import UserContextProvider from "../../context/user-context";
 import store from "../../redux/store";
 import { act } from "react-dom/test-utils";
+
+import { server } from "../../mocks/server";
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useRouteLoaderData: jest.fn(),
+}));
 
 const MockLogin = () => {
   return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Login />
-      </BrowserRouter>
+      <UserContextProvider>
+        <BrowserRouter>
+          <Login />
+        </BrowserRouter>
+      </UserContextProvider>
     </Provider>
   );
 };
@@ -63,23 +76,6 @@ test("able to produce validation errors", async () => {
 describe("Many testcases bundled into it", () => {
   it("User is able to able to login  with submit button", async () => {
     render(<MockLogin />);
-    const mockUser = {
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFycGl0dHR0dEBnbWFpbC5jb20iLCJpYXQiOjE2ODE2Mzg0MDcsImV4cCI6MTY4MTY0MjAwN30.1p84wcszEZxzFoUAitDX1IyGCATfufnkKHEkJxV2bd8",
-      id: "7ae12488-3452-4347-8042-014c771483b0",
-      email: "arpittttt@gmail.com",
-      name: "arpit ktyr",
-    };
-
-    window.fetch = jest.fn();
-    window.fetch.mockResolvedValueOnce({
-      json: async () => [
-        {
-          ...mockUser,
-        },
-      ],
-    });
-
     const linkElement = screen.getByLabelText(/password/i);
     fireEvent.change(linkElement, { target: { value: "testpassword" } });
     const inputElement = screen.getByPlaceholderText(/Enter email/i);
@@ -91,9 +87,12 @@ describe("Many testcases bundled into it", () => {
     act(() => {
       btn.dispatchEvent(new MouseEvent("click"));
     });
+    const msg = await screen.findByText("Submitting..");
+    expect(msg).toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(window.location.pathname).toBe("/");
-    });
+    const successMsg = await screen.findByText(
+      "Login Successfull, You will redirected to Homepage."
+    );
+    expect(successMsg).toBeInTheDocument();
   });
 });

@@ -4,7 +4,7 @@ import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import { getTokenDuration } from "../../Utils/auth";
 
-function RootLayout() {
+const RootLayout = () => {
   const token = useLoaderData();
   const submit = useSubmit();
   // const navigation = useNavigation();
@@ -35,6 +35,6 @@ function RootLayout() {
       <Footer />
     </>
   );
-}
+};
 
 export default RootLayout;

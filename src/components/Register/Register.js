@@ -11,13 +11,13 @@ function Register() {
   const { setUserEmail, setUserName } = useContext(UserContext);
   const navigate = useNavigate();
   //for redirecting already logged in
-  // const token = useRouteLoaderData("root");
+  const token = useRouteLoaderData("root");
 
-  // useEffect(() => {
-  //   if (token && token !== "EXPIRED") {
-  //     navigate("/Profile", { replace: true });
-  //   }
-  // }, [token, navigate]);
+  useEffect(() => {
+    if (token && token !== "EXPIRED") {
+      navigate("/Profile", { replace: true });
+    }
+  }, [token, navigate]);
 
   const [data, setData] = useState({});
 
@@ -193,6 +193,7 @@ function Register() {
 
             <button
               type="submit"
+              name="submit"
               disabled={isSubmitting}
               style={{ margin: "20px 0" }}
               className="btn btn-dark btn-block"

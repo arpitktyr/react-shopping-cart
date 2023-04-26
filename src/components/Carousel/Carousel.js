@@ -12,7 +12,7 @@ const Carousel = () => {
     (state) => state.productSlice
   );
   const dispatch = useDispatch();
-  if (product.length === 0 && loading !== true) {
+  if (product.length === 0 && loading !== true && error === "") {
     dispatch(getProducts());
   }
   const filterProduct = product.filter((item) => item.rating.rate > 4);
@@ -103,7 +103,9 @@ const Carousel = () => {
 
   return (
     <>
-      {error ? (
+      {loading ? (
+        <p className="text-center">loading...</p>
+      ) : error !== "" ? (
         <span className="alert alert-danger"> Something Went Wrong !!</span>
       ) : (
         topProducts

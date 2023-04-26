@@ -10,7 +10,8 @@ const store = configureStore({
   reducer: { handleCart, categorySlice, cartSlice, productSlice },
 });
 
-//used for configure store in test cases
+//used for configure store in test cases with predifined State
+
 export const setupStore = (preloadedState) => {
   return configureStore({
     reducer: { handleCart, categorySlice, cartSlice, productSlice },
