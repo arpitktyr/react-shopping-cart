@@ -13,7 +13,7 @@ const Home = () => {
         <img
           src={"images/home5.webp"}
           className="img-fluid"
-          alt="grocery bag "
+          alt="grocery bag"
         />
       </div>
       <Categorieslist />

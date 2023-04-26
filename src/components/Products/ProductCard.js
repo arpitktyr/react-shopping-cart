@@ -17,11 +17,11 @@ const ProductCard = (prop) => {
         <div className="card-body">
           <h5 className="card-title">
             <Link
+              data-testid="product-btn"
               className="product-title"
               data={product.id}
               to={`/product/${product.id}`}
             >
-              {" "}
               {product.title.length > 23
                 ? product.title.slice(0, 23) + "..."
                 : product.title}

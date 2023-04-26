@@ -1,7 +1,23 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Register from "./Register.js";
 import UserContextProvider from "../../context/user-context.js";
+import { server } from "../../mocks/server";
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useRouteLoaderData: jest.fn(),
+}));
 
 const MockRegister = () => {
   return (
@@ -79,5 +95,38 @@ test("able to produce validation errors", async () => {
   });
   await waitFor(() => {
     expect(screen.getByText("Password is required.")).toBeInTheDocument();
+  });
+});
+
+describe("Many testcases bundled into it", () => {
+  it("User is able to able to Register  with submit button", async () => {
+    render(<MockRegister />);
+
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: "aman" },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: "aman@test.com" },
+    });
+    fireEvent.change(screen.getByLabelText("Password"), {
+      target: { value: "testpassword" },
+    });
+    fireEvent.change(screen.getByLabelText("Confirm Password"), {
+      target: { value: "testpassword" },
+    });
+    const btn = screen.getByRole("button", { name: /Submit/i });
+
+    // fireEvent.click(btn);
+
+    act(() => {
+      btn.dispatchEvent(new MouseEvent("click"));
+    });
+    const msg = await screen.findByText("Submitting..");
+    expect(msg).toBeInTheDocument();
+
+    const successMsg = await screen.findByText(
+      "Registered Successfully, Will redirected to Homepage."
+    );
+    expect(successMsg).toBeInTheDocument();
   });
 });

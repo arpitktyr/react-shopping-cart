@@ -10,11 +10,15 @@ import { getCategories } from "./../../redux/reducer/categorySlice";
 const Header = () => {
   const dispatch = useDispatch();
   const token = useRouteLoaderData("root");
-  const { category, categoryLoading } = useSelector(
+  const { category, categoryLoading, categoryError } = useSelector(
     (state) => state.categorySlice
   );
 
-  if (category.length === 0 && categoryLoading !== true) {
+  if (
+    category.length === 0 &&
+    categoryLoading !== true &&
+    categoryError === ""
+  ) {
     dispatch(getCategories());
   }
 
@@ -61,7 +65,11 @@ const Header = () => {
                 </li>
 
                 {category.map((item) => (
-                  <li key={item.catId} className="nav-item">
+                  <li
+                    key={item.catId}
+                    className="nav-item"
+                    data-testid="categories-list"
+                  >
                     <NavLink
                       className={({ isActive }) =>
                         isActive
