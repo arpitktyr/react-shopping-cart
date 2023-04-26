@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { renderWithProviders } from "../../Utils/test-utils";
 import ProductList from "./ProductList";

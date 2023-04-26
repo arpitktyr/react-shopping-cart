@@ -1,3 +1,4 @@
+import React from "react";
 const Footer = () => {
   let footerStyle = {
     color: "#fff",
