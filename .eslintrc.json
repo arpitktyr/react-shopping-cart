@@ -1,11 +1,14 @@
 {
-    "extends": [
-        "react-app",
-        "react-app/jest",
-        "plugin:prettier/recommended"
-      ],
-      "plugins": ["prettier"],
-      "rules": {
-        "prettier/prettier": "warn"
-      }
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["react", "react-hooks", "prettier"],
+  "rules": {
+    "prettier/prettier": "warn",
+    "react/prop-types": "off"
+  }
 }

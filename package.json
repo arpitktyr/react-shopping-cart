@@ -25,10 +25,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom='src/components/**/*.js'",
+    "coverage": "react-scripts test  --coverage --watchAll --collectCoverageFrom='src/components/**/*.js'",
     "eject": "react-scripts eject",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:fix": "eslint --fix --ignore-path .gitignore .",
     "prepare": "husky install"
   },
   "browserslist": {
