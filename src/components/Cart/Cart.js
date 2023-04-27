@@ -74,12 +74,17 @@ const Cart = () => {
                 <div className="col-md-12 col-lg-8">
                   <div className="items">
                     {state.map((cart) => {
-                      totalAmount +=
-                        cart.qty !== "undefined" && cart.qty > 0
-                          ? parseInt(cart.price * cart.qty)
-                          : parseInt(cart.price);
+                      // totalAmount +=
+                      //   cart.qty !== "undefined" && cart.qty > 0
+                      //     ? parseInt(cart.price * cart.qty)
+                      //     : parseInt(cart.price);
+                      totalAmount += parseInt(cart.price * cart.qty);
                       return (
-                        <div key={cart.id} className="product">
+                        <div
+                          key={cart.id}
+                          className="product"
+                          data-testid="cart-items"
+                        >
                           <div className="row">
                             <div className="col-md-4">
                               <img
@@ -120,7 +125,7 @@ const Cart = () => {
                                         className="btn btn-danger ml-3"
                                         onClick={() => removeProduct(cart)}
                                       >
-                                        <i className="fas fa-trash "></i>
+                                        Remove
                                       </button>
                                     </span>
                                   </div>
