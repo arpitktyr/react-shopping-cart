@@ -7,7 +7,7 @@ const ProductCard = (prop) => {
   return (
     <div className="product-card col-sm-4">
       <div className="card">
-        <Link data={product._id} to={`/product/${product.id}`}>
+        <Link to={`/product/${product.id}`}>
           <img
             className="center-cropped"
             src={product.image}
@@ -19,7 +19,6 @@ const ProductCard = (prop) => {
             <Link
               data-testid="product-btn"
               className="product-title"
-              data={product.id}
               to={`/product/${product.id}`}
             >
               {product.title.length > 23

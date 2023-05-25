@@ -51,7 +51,6 @@ const Carousel = () => {
           <div className="slider-item" key={products.id}>
             <Link
               className="product-title carousel-title"
-              data={products.id}
               to={`/product/${products.id}`}
             >
               <img
@@ -64,7 +63,6 @@ const Carousel = () => {
               <h5 className="card-title">
                 <Link
                   className="product-title carousel-title"
-                  data={products.id}
                   to={`/product/${products.id}`}
                 >
                   {" "}
