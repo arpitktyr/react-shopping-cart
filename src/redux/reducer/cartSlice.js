@@ -20,7 +20,7 @@ export const cartSlice = createSlice({
             : item
         );
       }
-      return (state = product);
+      return state.push(product);
     },
 
     deleteItem: (state, action) => {
