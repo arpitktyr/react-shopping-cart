@@ -14,7 +14,7 @@ const Profile = () => {
   });
 
   const handleSave = (newUserData) => {
-    console.log(newUserData);
+    //console.log(newUserData);
     setUserData(newUserData);
   };
 
