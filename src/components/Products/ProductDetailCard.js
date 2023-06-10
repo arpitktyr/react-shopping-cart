@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 
 const ProductDetailCard = (props) => {
   const [cartBtn, setCartBtn] = useState("Add to Cart");
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
-  const [error, SetError] = useState({});
 
   const state = useSelector((state) => state.handleCart);
 
@@ -16,27 +15,27 @@ const ProductDetailCard = (props) => {
     state.forEach((element) => {
       if (element.id === props.data.id) {
         setCartBtn("Remove from Cart");
-        setQuantity(element.qty);
+        //setQuantity(element.qty);
       }
     });
     //eslint-disable-next-line
   }, []);
 
-  const onChangeHandler = (event) => {
-    if (event.target.value <= 0) {
-      setQuantity(1);
-      SetError("Quantity should not be less than 1");
-    } else {
-      SetError("");
-      setQuantity(event.target.value);
-    }
-  };
+  // const onChangeHandler = (event) => {
+  //   if (event.target.value <= 0) {
+  //     setQuantity(1);
+  //     SetError("Quantity should not be less than 1");
+  //   } else {
+  //     SetError("");
+  //     setQuantity(event.target.value);
+  //   }
+  // };
 
   const handle = (props) => {
     if (cartBtn === "Add to Cart") {
       const productData = {
         ...props.data,
-        qty: parseInt(quantity),
+        qty: 1,
       };
       dispatch(addCart(productData));
       setCartBtn("Remove from Cart");
@@ -47,8 +46,7 @@ const ProductDetailCard = (props) => {
   };
 
   const { title, image, price, description } = props.data;
-  // console.log(rating);
-  // console.log(props.data);
+
   return (
     <div className="row">
       <div className="col-sm-6">
@@ -58,12 +56,35 @@ const ProductDetailCard = (props) => {
       </div>
       <div className="col-sm-6 product-detail">
         <div className=" product-detail card-body">
-          {error.length > 0 && (
-            <div className="alert alert-danger"> {error}</div>
-          )}
-
           <h5 className="card-title">{title}</h5>
-          <p className="text-muted mb-4">{description}</p>
+          <p className="text-muted mb-3">{description}</p>
+          <div className="offers">
+            <ul className="offer-list">
+              <li>
+                <span>Special Price</span> Get extra 5% off (price inclusive of
+                discount)
+              </li>
+
+              <li>
+                <span>Bank Offer</span> 5% Cashback* on HDFC Bank Debit Cards
+              </li>
+              <li>
+                <span>Bank Offer</span> Extra 5% off* with Axis Bank Buzz Credit
+                Card
+              </li>
+            </ul>
+          </div>
+          <div className="highlight">
+            <h5 className="title">Services:</h5>
+            <ul className="highlight-list">
+              <li>
+                <p>30 Day Return Policy</p>
+              </li>
+              <li>
+                <p>Cash on Delivery available</p>
+              </li>
+            </ul>
+          </div>
 
           <div className="price">
             <span className="price-after">₹{price}</span>
@@ -73,7 +94,7 @@ const ProductDetailCard = (props) => {
             <span className="discount">10% off</span>
           </div>
 
-          <div className="d-flex justify-content-left ">
+          {/* <div className="d-flex justify-content-left ">
             <span>Quantity :</span>
             <input
               onChange={onChangeHandler}
@@ -83,7 +104,7 @@ const ProductDetailCard = (props) => {
               min="1"
               max={50}
             ></input>
-          </div>
+          </div> */}
           <div className="d-flex justify-content-between">
             <button
               onClick={() => handle(props)}

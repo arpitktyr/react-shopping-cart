@@ -1,5 +1,11 @@
 .card {
   text-align: center;
+  box-shadow: 2px 3px 3px rgb(211 211 211 / 31%);
+}
+
+.product-card {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
 }
 
 .cat-img:hover {
@@ -8,8 +14,8 @@
 
 .card-text {
   margin: 10px 0;
-  font-size: 30px;
-  font-weight: 800;
+  font-size: 26px;
+  font-weight: 700;
   text-align: center;
   text-transform: capitalize;
 }
@@ -20,4 +26,31 @@
 
 .category-image {
   height: 250px !important;
+}
+
+.cat-image {
+  max-width: 200px;
+  border-radius: 50%;
+  box-shadow: 3px 6px 5px lightgray;
+}
+
+@media screen and (max-width: 1023px) {
+  .cat-image {
+    max-width: 130px;
+  }
+
+  .card-text {
+    font-size: 20px;
+  }
+}
+
+.category-card .card-body {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.category-card .card-right {
+  display: block;
+  margin: auto;
 }

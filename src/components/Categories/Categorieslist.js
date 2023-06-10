@@ -32,6 +32,7 @@ const Categorieslist = () => {
                 key={categories.catId}
                 catName={categories.name}
                 catId={categories.catId}
+                catImage={categories.catImage}
               />
             ))}
           </div>

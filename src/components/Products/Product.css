@@ -104,6 +104,9 @@
 .product-detail .price-before {
   font-size: 16px;
 }
+.product-detail .card-title {
+  font-size: 25px;
+}
 .product-detail .discount {
   font-size: 16px;
 }
@@ -143,4 +146,37 @@ ul.breadcrumb li a:hover {
 }
 .page-item:not(.active) .page-link {
   cursor: pointer;
+}
+
+.offer-list {
+  padding: 0;
+}
+.offer-list li {
+  display: block;
+  line-height: 30px;
+  font-size: 16px;
+  color: #6b778d;
+  line-height: 1.5;
+}
+.offer-list li span {
+  font-weight: 600;
+}
+
+.highlight .title {
+  color: #232020;
+  font-size: 20px;
+}
+
+.highlight-list {
+  padding: 0;
+  list-style: none;
+}
+
+.highlight-list li p {
+  display: block;
+  line-height: 30px;
+  font-size: 16px;
+  color: #6b778d;
+  line-height: 1.5;
+  margin: 0;
 }

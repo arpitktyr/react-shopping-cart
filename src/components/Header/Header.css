@@ -9,6 +9,7 @@
 
 .navbar .navbar-nav .nav-link {
   margin: 0 2px;
+  padding-left: 10px;
 }
 .navbar .navbar-nav .dropdown-toggle.show,
 .dropdown .dropdown-item:hover,
