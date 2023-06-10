@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
+import { Constants } from "../../Constants/Index";
 
 function Login() {
   const form = useForm({ mode: "onBlur" });
@@ -31,16 +32,13 @@ function Login() {
   const formSubmitHandler = async (userData) => {
     setData({ message: "", errors: {} });
     setIsSubmitting(true);
-    const response = await fetch(
-      "https://node-cart-backend.onrender.com/login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    );
+    const response = await fetch(`${Constants.apiUrl}login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
     setIsSubmitting(false);
     const resData = await response.json();
     if (!response.ok) {
@@ -58,6 +56,7 @@ function Login() {
       const token = resData.token;
       userContextData.setUserName(resData.name);
       userContextData.setUserEmail(resData.email);
+      userContextData.setUserID(resData.id);
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);

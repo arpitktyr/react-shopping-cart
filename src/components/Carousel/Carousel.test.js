@@ -6,6 +6,7 @@ import { renderWithProviders } from "../../Utils/test-utils";
 import Carousel from "./Carousel";
 import { BrowserRouter } from "react-router-dom";
 import { server } from "../../mocks/server";
+import { Constants } from "../../Constants/Index";
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -29,12 +30,9 @@ test("Carousel Testing", async () => {
 
 test("Carousel Error Testing", async () => {
   server.use(
-    rest.get(
-      "https://node-cart-backend.onrender.com/products",
-      (req, res, ctx) => {
-        return res(ctx.status(500));
-      }
-    )
+    rest.get(`${Constants.apiUrl}products`, (req, res, ctx) => {
+      return res(ctx.status(500));
+    })
   );
   renderWithProviders(
     <BrowserRouter>

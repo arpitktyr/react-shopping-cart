@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const EditProfile = ({ userData, onSave }) => {
   const [name, setName] = useState(userData.name);
@@ -6,6 +6,14 @@ const EditProfile = ({ userData, onSave }) => {
   const [pincode, setPincode] = useState(userData.pincode);
   const [address, setAddress] = useState(userData.address);
   const [mobile, setMobile] = useState(userData.mobile);
+
+  useEffect(() => {
+    setName(userData.name);
+    setEmail(userData.email);
+    setPincode(userData.pincode);
+    setAddress(userData.address);
+    setMobile(userData.mobile);
+  }, [userData]);
 
   const handleNameChange = (event) => {
     setName(event.target.value);

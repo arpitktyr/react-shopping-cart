@@ -4,12 +4,13 @@ import { Link, useNavigate, useRouteLoaderData } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { UserContext } from "../../context/user-context";
 import { useForm } from "react-hook-form";
+import { Constants } from "../../Constants/Index";
 
 function Register() {
   const form = useForm({ mode: "onBlur" });
   const { register, handleSubmit, getValues } = form;
   const { errors } = form.formState;
-  const { setUserEmail, setUserName } = useContext(UserContext);
+  const { setUserEmail, setUserName, setUserID } = useContext(UserContext);
   const navigate = useNavigate();
   //for redirecting already logged in
   const token = useRouteLoaderData("root");
@@ -35,16 +36,13 @@ function Register() {
     setData({ message: "", errors: {} });
 
     setIsSubmitting(true);
-    const response = await fetch(
-      "https://node-cart-backend.onrender.com/signup",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      }
-    );
+    const response = await fetch(`${Constants.apiUrl}signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
     setIsSubmitting(false);
     const resData = await response.json();
 
@@ -63,6 +61,7 @@ function Register() {
       const token = resData.token;
       setUserEmail(resData.user.email);
       setUserName(resData.user.name);
+      setUserID(resData.user.id);
       localStorage.setItem("token", token);
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);

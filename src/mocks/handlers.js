@@ -1,89 +1,83 @@
 import { rest } from "msw";
-
+import { Constants } from "../Constants/Index";
 export const handlers = [
-  rest.get(
-    "https://node-cart-backend.onrender.com/products",
-    (req, res, ctx) => {
-      return res(
-        ctx.json({
-          products: [
-            {
-              id: 1,
-              catId: "100",
-              title: "Foldsack No. 1 Back",
-              price: 109.95,
-              description:
-                "Your perfect pack for everyday use and walks in the forest.",
-              category: "Men's clothing",
-              image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-              rating: {
-                rate: 4.1,
-                count: 120,
-              },
+  rest.get(`${Constants.apiUrl}products`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        products: [
+          {
+            id: 1,
+            catId: "100",
+            title: "Foldsack No. 1 Back",
+            price: 109.95,
+            description:
+              "Your perfect pack for everyday use and walks in the forest.",
+            category: "Men's clothing",
+            image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+            rating: {
+              rate: 4.1,
+              count: 120,
             },
-            {
-              id: 1,
-              catId: "100",
-              title: "Foldsack No. 1 Back",
-              price: 109.95,
-              description:
-                "Your perfect pack for everyday use and walks in the forest.",
-              category: "Men's clothing",
-              image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-              rating: {
-                rate: 4.1,
-                count: 120,
-              },
+          },
+          {
+            id: 1,
+            catId: "100",
+            title: "Foldsack No. 1 Back",
+            price: 109.95,
+            description:
+              "Your perfect pack for everyday use and walks in the forest.",
+            category: "Men's clothing",
+            image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+            rating: {
+              rate: 4.1,
+              count: 120,
             },
-            {
-              id: 1,
-              catId: "100",
-              title: "Foldsack No. 1 Back",
-              price: 109.95,
-              description:
-                "Your perfect pack for everyday use and walks in the forest.",
-              category: "Men's clothing",
-              image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-              rating: {
-                rate: 4.1,
-                count: 120,
-              },
+          },
+          {
+            id: 1,
+            catId: "100",
+            title: "Foldsack No. 1 Back",
+            price: 109.95,
+            description:
+              "Your perfect pack for everyday use and walks in the forest.",
+            category: "Men's clothing",
+            image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+            rating: {
+              rate: 4.1,
+              count: 120,
             },
-          ],
-        }),
-        ctx.delay(150)
-      );
-    }
-  ),
-  rest.get(
-    "https://node-cart-backend.onrender.com/category",
-    (req, res, ctx) => {
-      return res(
-        ctx.json({
-          category: [
-            {
-              name: "Men's clothing",
-              catId: "100",
-            },
-            {
-              name: "Women's clothing",
-              catId: "101",
-            },
-            {
-              name: "Electronics",
-              catId: "102",
-            },
-            {
-              name: "Jewellery",
-              catId: "103",
-            },
-          ],
-        }),
-        ctx.delay(150)
-      );
-    }
-  ),
-  rest.post("https://node-cart-backend.onrender.com/login", (req, res, ctx) => {
+          },
+        ],
+      }),
+      ctx.delay(150)
+    );
+  }),
+  rest.get(`${Constants.apiUrl}category`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        category: [
+          {
+            name: "Men's clothing",
+            catId: "100",
+          },
+          {
+            name: "Women's clothing",
+            catId: "101",
+          },
+          {
+            name: "Electronics",
+            catId: "102",
+          },
+          {
+            name: "Jewellery",
+            catId: "103",
+          },
+        ],
+      }),
+      ctx.delay(150)
+    );
+  }),
+  rest.post(`${Constants.apiUrl}login`, (req, res, ctx) => {
     return res(
       ctx.json({
         token:
@@ -96,22 +90,19 @@ export const handlers = [
     );
   }),
 
-  rest.post(
-    "https://node-cart-backend.onrender.com/signup",
-    (req, res, ctx) => {
-      return res(
-        ctx.json({
-          message: "User created.",
-          user: {
-            id: "d6325060-22e3-40a6-90e6-27d97991cd5e",
-            email: "arpitkatiyar@gmail.com",
-            name: "arpit ktyr",
-          },
-          token:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFycGl0dHR0dHR0QGdtYWlsLmNvbSIsImlhdCI6MTY4MjQ4MDMyNSwiZXhwIjoxNjgyNDgzOTI1fQ.tPh15-pAr0WRzy8dLb3RREMIcGIeSmGQ8ydmLjRlb0w",
-        }),
-        ctx.delay(150)
-      );
-    }
-  ),
+  rest.post(`${Constants.apiUrl}signup`, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        message: "User created.",
+        user: {
+          id: "d6325060-22e3-40a6-90e6-27d97991cd5e",
+          email: "arpitkatiyar@gmail.com",
+          name: "arpit ktyr",
+        },
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFycGl0dHR0dHR0QGdtYWlsLmNvbSIsImlhdCI6MTY4MjQ4MDMyNSwiZXhwIjoxNjgyNDgzOTI1fQ.tPh15-pAr0WRzy8dLb3RREMIcGIeSmGQ8ydmLjRlb0w",
+      }),
+      ctx.delay(150)
+    );
+  }),
 ];
