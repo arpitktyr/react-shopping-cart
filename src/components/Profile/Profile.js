@@ -34,6 +34,7 @@ const Profile = () => {
           address: userData.data?.address,
           mobile: userData.data?.mobile,
         });
+        setError(null);
       } catch (e) {
         setLoading(false);
         setError("Something went wrong!");
@@ -63,6 +64,7 @@ const Profile = () => {
         }
         setUserData(newUserData);
         setLoading(false);
+        setError(null);
       } catch (e) {
         setLoading(false);
         setError("Something went wrong!");
@@ -75,7 +77,7 @@ const Profile = () => {
   return (
     <div className="container my-4">
       <h1 className="text-center">Profile</h1>
-      {error && <div className=" alert alert-danger col-sm-12"> {error}</div>}
+
       {success && (
         <div className=" alert alert-success col-sm-12"> {success}</div>
       )}
@@ -88,6 +90,8 @@ const Profile = () => {
           <div className="col col-sm-6">
             {loading ? (
               <LoadingSpinner />
+            ) : error ? (
+              <div className=" alert alert-danger col-sm-12"> {error}</div>
             ) : (
               <EditProfile userData={userData} onSave={handleSave} />
             )}
