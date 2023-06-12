@@ -1,42 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 
 const EditProfile = ({ userData, onSave }) => {
-  const [name, setName] = useState(userData.name);
-  const [email, setEmail] = useState(userData.email);
-  const [pincode, setPincode] = useState(userData.pincode);
-  const [address, setAddress] = useState(userData.address);
-  const [mobile, setMobile] = useState(userData.mobile);
+  const { register, handleSubmit, formState, reset } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      name: userData?.name,
+      email: userData?.email,
+      pincode: userData?.pincode,
+      address: userData?.address,
+      mobile: userData?.mobile,
+    },
+  });
+  const { errors } = formState;
 
-  useEffect(() => {
-    setName(userData.name);
-    setEmail(userData.email);
-    setPincode(userData.pincode);
-    setAddress(userData.address);
-    setMobile(userData.mobile);
-  }, [userData]);
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePincodeChange = (event) => {
-    setPincode(event.target.value);
-  };
-
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
-
-  const handleMobileChange = (event) => {
-    setMobile(event.target.value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleProfileForm = (data) => {
+    const { name, email, address, pincode, mobile } = data;
     onSave({
       name,
       email,
@@ -48,7 +27,7 @@ const EditProfile = ({ userData, onSave }) => {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(handleProfileForm)}
       style={{ width: "100%", display: "flex", flexDirection: "column" }}
     >
       <div className="form-group">
@@ -57,9 +36,21 @@ const EditProfile = ({ userData, onSave }) => {
           className="form-control"
           type="text"
           id="name"
-          value={name}
-          onChange={handleNameChange}
+          {...register("name", {
+            required: {
+              value: true,
+              message: "Name is required.",
+            },
+            pattern: {
+              value: /^[a-zA-Z ]+$/,
+              message: "Invalid name.",
+            },
+          })}
+          aria-invalid={errors.name ? "true" : "false"}
         />
+        {errors.name && (
+          <span className="text-danger">{errors.name?.message}</span>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="email">Email</label>
@@ -67,9 +58,21 @@ const EditProfile = ({ userData, onSave }) => {
           className="form-control"
           type="email"
           id="email"
-          value={email}
-          onChange={handleEmailChange}
+          {...register("email", {
+            required: {
+              value: true,
+              message: "Email is required.",
+            },
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "Invalid email format.",
+            },
+          })}
+          aria-invalid={errors.email ? "true" : "false"}
         />
+        {errors.email && (
+          <span className="text-danger">{errors.email?.message}</span>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="pincode">Pincode</label>
@@ -77,18 +80,38 @@ const EditProfile = ({ userData, onSave }) => {
           className="form-control"
           type="text"
           id="pincode"
-          value={pincode}
-          onChange={handlePincodeChange}
-        />
+          {...register("pincode", {
+            required: {
+              value: true,
+              message: "Pincode is required.",
+            },
+            pattern: {
+              value: /^[0-9]{6}$/,
+              message: "Enter valid Pincode.",
+            },
+          })}
+          aria-invalid={errors.pincode ? "true" : "false"}
+        />{" "}
+        {errors.pincode && (
+          <span className="text-danger">{errors.pincode?.message}</span>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="address">Address</label>
         <textarea
           className="form-control"
           id="address"
-          value={address}
-          onChange={handleAddressChange}
+          {...register("address", {
+            required: {
+              value: true,
+              message: "Address is required.",
+            },
+          })}
+          aria-invalid={errors.address ? "true" : "false"}
         />
+        {errors.address && (
+          <span className="text-danger">{errors.address?.message}</span>
+        )}
       </div>
       <div className="form-group">
         <label htmlFor="mobile">Mobile</label>
@@ -96,9 +119,21 @@ const EditProfile = ({ userData, onSave }) => {
           className="form-control"
           type="text"
           id="mobile"
-          value={mobile}
-          onChange={handleMobileChange}
+          {...register("mobile", {
+            required: {
+              value: true,
+              message: "Mobile is required.",
+            },
+            pattern: {
+              value: /^[0-9]{10}$/,
+              message: "Enter valid Mobile No.",
+            },
+          })}
+          aria-invalid={errors.mobile ? "true" : "false"}
         />
+        {errors.mobile && (
+          <span className="text-danger">{errors.mobile?.message}</span>
+        )}
       </div>
       <button name="save" className="btn btn-success" type="submit">
         Save
