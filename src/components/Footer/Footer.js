@@ -10,9 +10,7 @@ const Footer = () => {
   };
   return (
     <footer>
-      <p style={footerStyle}>
-        Copyright © 2012 The Grocery Company. Call us on +91 9900000011
-      </p>
+      <p style={footerStyle}>Design and developed by Arpit.</p>
     </footer>
   );
 };
