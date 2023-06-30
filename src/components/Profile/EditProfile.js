@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 const EditProfile = ({ userData, onSave }) => {
-  const { register, handleSubmit, formState, reset } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     mode: "onBlur",
     defaultValues: {
       name: userData?.name,
