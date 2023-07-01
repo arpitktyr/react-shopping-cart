@@ -15,8 +15,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
+        
+      - name: Test
+        run: npm run test
+        
       - name: Build
         run: npm run build
+     
 
       # Additional steps for testing or deployment can be added here
