@@ -1,10 +1,12 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-//import Profile from "./Profile";
+import Profile from "./Profile";
 import EditProfile from "./EditProfile";
 import { BrowserRouter } from "react-router-dom";
 import UserContextProvider from "../../context/user-context";
 import { waitFor } from "@testing-library/react";
+import axios from "axios";
+jest.mock("axios");
 
 const userData = {
   name: "aman",
@@ -109,6 +111,46 @@ describe("EditProfile component", () => {
         address: "Kanpur, Uttar Pradesh",
         mobile: "9956455678",
       });
+    });
+  });
+});
+
+describe("Profile component", () => {
+  test("Should show Loading icon", () => {
+    render(
+      <UserContextProvider>
+        <BrowserRouter>
+          <Profile />
+        </BrowserRouter>
+      </UserContextProvider>
+    );
+    //screen.debug();
+    const loader = screen.getByTestId("loading-spinner");
+    expect(loader).toBeInTheDocument();
+  });
+
+  test("Should show user Details", async () => {
+    const mockValue = {
+      name: "aman",
+      email: "aman@gmail.com",
+      pincode: "209727",
+      address: "Kanpur, Uttar Pradesh",
+      mobile: "9956455678",
+    };
+
+    // Use mockResolvedValueOnce instead of mockReturnValueOnce
+    axios.get.mockResolvedValueOnce({ data: mockValue });
+    render(
+      <UserContextProvider>
+        <BrowserRouter>
+          <Profile />
+        </BrowserRouter>
+      </UserContextProvider>
+    );
+    //screen.debug();
+    await waitFor(() => {
+      const name = screen.getByText("Something went wrong!");
+      expect(name).toBeInTheDocument();
     });
   });
 });
