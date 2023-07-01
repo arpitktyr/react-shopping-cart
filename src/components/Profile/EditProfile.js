@@ -27,11 +27,12 @@ const EditProfile = ({ userData, onSave }) => {
 
   return (
     <form
+      name="profileForm"
       onSubmit={handleSubmit(handleProfileForm)}
       style={{ width: "100%", display: "flex", flexDirection: "column" }}
     >
       <div className="form-group">
-        <label htmlFor="name">Name </label>
+        <label htmlFor="name">Name</label>
         <input
           className="form-control"
           type="text"
