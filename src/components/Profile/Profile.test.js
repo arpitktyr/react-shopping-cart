@@ -154,3 +154,14 @@ describe("Profile component", () => {
     });
   });
 });
+
+test("Snapshot Testing", () => {
+  const { container } = render(
+    <UserContextProvider>
+      <BrowserRouter>
+        <EditProfile userData={userData} onSave={onSaveMock} />
+      </BrowserRouter>
+    </UserContextProvider>
+  );
+  expect(container.innerHTML).toMatchSnapshot();
+});
